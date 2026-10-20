@@ -1,0 +1,3 @@
+segment,purchase_lines,purchase_value_gbp,customers,top_decile_ids,known_value_gbp,top_decile_share_pct,known_id_value_coverage_pct
+United Kingdom,458301,8132965.1000000015,3882,389,6783370.109999999,58.434953359783584,83.40586768287004
+Other countries,42230,1478025.46,411,42,1449670.4499999997,69.17412367755722,98.0815614637653

@@ -1,0 +1,3 @@
+observed_invoice_group,customers,observed_value_gbp,median_customer_value_gbp,customer_share_pct,known_value_share_pct
+one invoice,1551,644425.56,262.2,36.12858141160028,7.827309428437943
+two or more invoices,2742,7588615.0,1140.28,63.87141858839972,92.17269057156206
