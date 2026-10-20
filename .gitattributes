@@ -3,7 +3,7 @@
 *.md text eol=lf
 *.tex text eol=lf
 *.json -text
-*.ipynb text eol=lf
+*.ipynb -text
 *.csv -text
 *.gz -text
 *.pdf -text
