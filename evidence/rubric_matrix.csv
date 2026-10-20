@@ -1,0 +1,24 @@
+criterion,available_points,requirement,evidence
+A,5,"Same problem, KPI and units",Notebook 1–2; baseline assertions
+A,5,Three or more grounded feedback entries,Notebook 3; feedback_to_action.csv
+A,5,Visible conclusion corrections/retentions,Notebook 3–4; report 4
+B,5,"Statistics, denominators and units",Notebook 2 and 4; monthly_kpi.csv
+B,5,Three informative labelled figures,Four saved notebook images; analysis/figures/
+B,5,Evidence-based interpretation and limits,Notebook 4; report 5
+C,5,Definitions and constraints,data_dictionary.csv; notebook 2
+C,5,Four or more executable checks,17 checks in quality_checks.csv; notebook 3
+C,5,Transparent treatments and row counts,row_flow.csv; validated_lines.csv.gz
+D,4,Populations and coverage bias,Notebook 5; report 6
+D,3,Reproducible subsample,sample_strata.csv; sample_invoice_ids.csv; actual sample
+D,3,KPI and segment comparison,sample_comparison.csv; notebook 5
+E,5,Decision-time availability,Notebook 6–7; protocol.json
+E,5,Four contextual risks/status/evidence,Seven rows in leakage_audit.csv
+E,5,Mitigation decisions,Notebook 7; no full-year feature reuse; preprocessing checks
+F,5,Defensible time/group split,Notebook 6; protocol.json; prior-exposure disclosure
+F,8,"Actual subsets, counts, overlap and reproducibility",data/splits/*.csv.gz; split_summary.csv; split_overlap.csv
+F,4,Train-only fitted preprocessing,preprocessing_parameters.json; invoice_preprocessing.csv
+F,4,Validation without test tuning,Notebook 6; fixed protocol; invariant scaler parameters
+F,4,Limits of test information,Notebook 6–7; prior full-case exploration and customer recurrence
+G,2,Executed notebook and README,Saved sequential outputs; root README
+G,2,Management summary and traceability,141-word summary; snapshots commit; final tag
+G,1,AI disclosure and English,Notebook 9; report Process record

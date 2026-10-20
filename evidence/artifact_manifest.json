@@ -1,0 +1,147 @@
+[
+  {
+    "path": "data/raw/online_retail_2010dec_2011nov_input.csv",
+    "bytes": 45515224,
+    "sha256": "8f6d42748e36cf41008f411307fe77e03b2001d25eb445dcfab5aa70186fdb4f"
+  },
+  {
+    "path": "data/processed/customer_country_exceptions.csv",
+    "bytes": 280,
+    "sha256": "866e4ecdef1dfdf5a2502226f8e014a0c7f3706918255a6e386b0c916f73b811"
+  },
+  {
+    "path": "data/processed/customer_portfolio.csv",
+    "bytes": 89041,
+    "sha256": "6808967e2bc805a80b219c865966a2858d7a21ea49331003b5fb45cb8993a3bd"
+  },
+  {
+    "path": "data/processed/data_dictionary.csv",
+    "bytes": 2383,
+    "sha256": "e8f922f7f0ac6134518948158d124b438e7a938cfe02eea01ad9d563b490e35a"
+  },
+  {
+    "path": "data/processed/feedback_to_action.csv",
+    "bytes": 1597,
+    "sha256": "b04c2894d396e93dc6b28378399cb97d9ccaec41c2e6a4d1b85441b3c3419947"
+  },
+  {
+    "path": "data/processed/invoice_preprocessing.csv",
+    "bytes": 1908102,
+    "sha256": "86b38aaf9d7a51fb13ae529046ac98256a280f300490f00a4b3517c6d9d9196b"
+  },
+  {
+    "path": "data/processed/invoice_sample_25pct.csv.gz",
+    "bytes": 2825011,
+    "sha256": "ba38c9f9531d0e39c5af06dbeee8b4b163707b902622489febee44542f126b7b"
+  },
+  {
+    "path": "data/processed/invoice_timestamp_exceptions.csv",
+    "bytes": 2607,
+    "sha256": "adcec93b000aa96510761dc8dfe8456cca0bcd5669e9ff249eb2ee50763e40f0"
+  },
+  {
+    "path": "data/processed/leakage_audit.csv",
+    "bytes": 2201,
+    "sha256": "b2ffa55bfb19147fac270ea64356d07081cfa03cb737fb5c061fac4a42927915"
+  },
+  {
+    "path": "data/processed/monthly_kpi.csv",
+    "bytes": 1455,
+    "sha256": "1f31467ec3b4a5b7bf176c56af5d7ccbed2267508f10e16f29346373857a03f2"
+  },
+  {
+    "path": "data/processed/preprocessing_by_split.csv",
+    "bytes": 269,
+    "sha256": "79de5fda2081ee65a85dd35a8b90e9c5855c70cf79440a42de3bb598e7d75ecf"
+  },
+  {
+    "path": "data/processed/quality_checks.csv",
+    "bytes": 2403,
+    "sha256": "1abb43dcfd9f713a18b1e1738b8fac8817303db30bf595ac8938405b78dfac91"
+  },
+  {
+    "path": "data/processed/row_flow.csv",
+    "bytes": 162,
+    "sha256": "5c5ef4f0f10cb53d638ef2857b392a6369b21aee4e1e16d1c147ea70143b85a6"
+  },
+  {
+    "path": "data/processed/sample_comparison.csv",
+    "bytes": 626,
+    "sha256": "2912b0f797128293347d31bbd8eeabf0ec372bf234ff3419195daf4f410b7e10"
+  },
+  {
+    "path": "data/processed/sample_invoice_ids.csv",
+    "bytes": 50716,
+    "sha256": "403a044a43d654843015080c377dbba328d53758333ea8ad01d3633f74d8b6fd"
+  },
+  {
+    "path": "data/processed/sample_strata.csv",
+    "bytes": 628,
+    "sha256": "da40635d5c9a8d568191b52fb904f505ced9a95a24413864e8997120d700f142"
+  },
+  {
+    "path": "data/processed/sensitivity.csv",
+    "bytes": 769,
+    "sha256": "cbcba6aabcf882a80bba25b1fd315ae59c73145440f0d9fbaf9249c89ba242d5"
+  },
+  {
+    "path": "data/processed/split_membership.csv",
+    "bytes": 11024015,
+    "sha256": "47d7b8e6d6ee01dfc1b29ac79e73fc7498a16809719b5ea9b92bd5d0544a5952"
+  },
+  {
+    "path": "data/processed/split_overlap.csv",
+    "bytes": 834,
+    "sha256": "f01e0db9ae29e776c659b57d906cd7038d56ecaf6b4672f1ef523ac81f297735"
+  },
+  {
+    "path": "data/processed/split_summary.csv",
+    "bytes": 391,
+    "sha256": "64e420cb0cbc0aaa91c4199a996aad4bb169afe15d06b808adaa3c59836c8ef5"
+  },
+  {
+    "path": "data/processed/validated_lines.csv.gz",
+    "bytes": 11031970,
+    "sha256": "dc421445fae29a19d36dd0781532e6028ca059c3f03a4e2236829795fa79b5cd"
+  },
+  {
+    "path": "data/processed/w2_metrics.json",
+    "bytes": 3726,
+    "sha256": "03ab9b5657068d085b3700cd861af750b583cbec8cce8fa0d3228b7ee7a8dd5a"
+  },
+  {
+    "path": "data/splits/test.csv.gz",
+    "bytes": 3112686,
+    "sha256": "44bb2295e2c89831eb3c0d56015bfddcc0cf942a6771b1e39ad37b01bf65668d"
+  },
+  {
+    "path": "data/splits/train.csv.gz",
+    "bytes": 6072404,
+    "sha256": "baa1fc3aba6337a29e616b12f30aeb31c55ed04fc4d81aa28eafd2a22d1920a7"
+  },
+  {
+    "path": "data/splits/validation.csv.gz",
+    "bytes": 1848752,
+    "sha256": "ffa5eef8cd7bd806d1f6dcf7b5a16d163c4b6013d39e6090ce57d678392628f0"
+  },
+  {
+    "path": "analysis/figures/concentration_curve.png",
+    "bytes": 57796,
+    "sha256": "85c16746e974a7921262843fdcf261e764dfa53db27d3f646bbfc8132d3a41eb"
+  },
+  {
+    "path": "analysis/figures/customer_value_distribution.png",
+    "bytes": 26038,
+    "sha256": "56c638c2584ed03b27418cac12a32a8b5c22d001d5c89eb5c8de5c52851bb630"
+  },
+  {
+    "path": "analysis/figures/frequency_value_relationship.png",
+    "bytes": 64881,
+    "sha256": "5749fcc6f394ad3b4f2b3eb2311fb0e118db6692ad30c68a4837b2447c9cffcd"
+  },
+  {
+    "path": "analysis/figures/monthly_kpi_coverage_population.png",
+    "bytes": 53871,
+    "sha256": "ccbe1cbeaf98755538a384c188d52ff18d0bd66f8ea60181ab549212f64601ec"
+  }
+]

@@ -1,0 +1,112 @@
+{
+  "baseline": {
+    "source_lines": 516384,
+    "purchase_lines": 500531,
+    "known_customers": 4293,
+    "top_ids": 430,
+    "eligible_value_gbp": 9610990.56,
+    "known_value_gbp": 8233040.5600000005,
+    "K10_pct": 60.50013933127034,
+    "ID_coverage_pct": 85.66276814655409,
+    "UK_value_share_pct": 84.62150752544284
+  },
+  "median_customer_value": 652.8,
+  "mean_customer_value": 1917.7825669694853,
+  "max_customer_value": 267410.0,
+  "spearman_frequency_value": 0.8034762591323735,
+  "pearson_frequency_value": 0.5693700867061668,
+  "sensitivity_min_K10": 59.21690008681497,
+  "sensitivity_max_K10": 60.57768138837671,
+  "quality_details": {
+    "invoice_multiple_timestamps": 43,
+    "invoice_timestamp_span_max_minutes": 1.0,
+    "invoice_timestamp_exceptions_cross_day": 0,
+    "customer_multiple_countries": 8,
+    "purchase_invoice_mixed_id": 0
+  },
+  "sampling": [
+    {
+      "dataset": "Complete available case",
+      "source_lines": 516384,
+      "purchase_lines": 500531,
+      "known_customers": 4293,
+      "top_ids": 430,
+      "eligible_value_gbp": 9610990.56,
+      "known_value_gbp": 8233040.5600000005,
+      "K10_pct": 60.50013933127034,
+      "ID_coverage_pct": 85.66276814655409,
+      "UK_value_share_pct": 84.62150752544284,
+      "K10_pct_difference_pp": 0.0,
+      "ID_coverage_pct_difference_pp": 0.0,
+      "UK_value_share_pct_difference_pp": 0.0,
+      "fraction_source_rows_pct": 100.0
+    },
+    {
+      "dataset": "Month-stratified invoice sample",
+      "source_lines": 130912,
+      "purchase_lines": 126768,
+      "known_customers": 2217,
+      "top_ids": 222,
+      "eligible_value_gbp": 2362428.7900000005,
+      "known_value_gbp": 2013070.9100000001,
+      "K10_pct": 54.00836823974571,
+      "ID_coverage_pct": 85.21191912836449,
+      "UK_value_share_pct": 83.13320969983606,
+      "K10_pct_difference_pp": -6.491771091524633,
+      "ID_coverage_pct_difference_pp": -0.45084901818960077,
+      "UK_value_share_pct_difference_pp": -1.4882978256067787,
+      "fraction_source_rows_pct": 25.351676271921672
+    }
+  ],
+  "preprocessing": {
+    "feature": "log1p(invoice_value_gbp)",
+    "fit_partition": "train",
+    "fitted_invoice_count": 11040,
+    "mean": 5.50874260141285,
+    "scale": 1.1945441036581714,
+    "refit_on_validation_or_test": false,
+    "parameter_invariance_verified": true,
+    "K10_uses_original_GBP": true
+  },
+  "split_counts": [
+    {
+      "split": "train",
+      "first": "2010-12-01 08:26:00",
+      "last": "2011-07-31 16:04:00",
+      "rows": 285421,
+      "row_fraction_pct": 55.27301388114272,
+      "invoices": 14722,
+      "known_ids_raw": 3193,
+      "eligible_purchase_lines": 275701,
+      "eligible_known_ids": 3145
+    },
+    {
+      "split": "validation",
+      "first": "2011-08-01 08:30:00",
+      "last": "2011-09-30 17:22:00",
+      "rows": 85510,
+      "row_fraction_pct": 16.559382165210387,
+      "invoices": 4064,
+      "known_ids_raw": 1817,
+      "eligible_purchase_lines": 83113,
+      "eligible_known_ids": 1769
+    },
+    {
+      "split": "test",
+      "first": "2011-10-02 10:32:00",
+      "last": "2011-11-30 17:42:00",
+      "rows": 145453,
+      "row_fraction_pct": 28.1676039536469,
+      "invoices": 6099,
+      "known_ids_raw": 2446,
+      "eligible_purchase_lines": 141717,
+      "eligible_known_ids": 2405
+    }
+  ],
+  "protocol_sha256": "7081b76da0aa89f20ad9274d76beb5dc56ce5b02959ffd8e0c49a1a5fe3e4a09",
+  "input_sha256": "8f6d42748e36cf41008f411307fe77e03b2001d25eb445dcfab5aa70186fdb4f",
+  "source_rows_before": 516384,
+  "source_rows_after": 516384,
+  "quality_check_count": 17,
+  "seed": 4232026
+}

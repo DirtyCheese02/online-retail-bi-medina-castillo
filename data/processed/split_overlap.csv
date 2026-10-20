@@ -1,0 +1,13 @@
+left,right,unit,overlap_count,interpretation
+train,validation,source_rows,0,Must be zero
+train,validation,invoices,0,Must be zero
+train,validation,known_customer_ids,1352,Allowed: same-account later-period scope
+train,validation,exact_source_record_hashes,0,Must be zero; duplicates include invoice and timestamp
+train,test,source_rows,0,Must be zero
+train,test,invoices,0,Must be zero
+train,test,known_customer_ids,1566,Allowed: same-account later-period scope
+train,test,exact_source_record_hashes,0,Must be zero; duplicates include invoice and timestamp
+validation,test,source_rows,0,Must be zero
+validation,test,invoices,0,Must be zero
+validation,test,known_customer_ids,1156,Allowed: same-account later-period scope
+validation,test,exact_source_record_hashes,0,Must be zero; duplicates include invoice and timestamp

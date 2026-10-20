@@ -1,0 +1,29 @@
+{
+  "recorded_on": "2026-10-20",
+  "seed": 4232026,
+  "case_start": "2010-12-01",
+  "case_end_exclusive": "2011-12-01",
+  "merchandise_regex": "[0-9]{5}[A-Z]?",
+  "purchase_rule": "merchandise pattern; not C; Quantity > 0; UnitPrice > 0",
+  "c_record_rule": "merchandise pattern; C prefix; Quantity < 0; UnitPrice > 0",
+  "duplicates": "retain baseline; deduplicate only sensitivity",
+  "sampling": "25% of distinct invoices within earliest-invoice-month; rounded nearest integer; all invoice lines retained",
+  "split_dates": {
+    "train": [
+      "2010-12-01",
+      "2011-08-01"
+    ],
+    "validation": [
+      "2011-08-01",
+      "2011-10-01"
+    ],
+    "test": [
+      "2011-10-01",
+      "2011-12-01"
+    ]
+  },
+  "preprocessing": "log1p eligible invoice value, StandardScaler fit on train invoices only",
+  "intended_use": "retrospective monthly review of existing customer accounts; no predictive accuracy claim",
+  "prior_exposure": "W1/C1 inspected the entire case; this is not a virgin or prospective test set",
+  "test_policy": "rules fixed from C1 and agreed W2 plan; no threshold, feature or model selection from test"
+}

@@ -1,0 +1,137 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "check": "C1 baseline independently regenerated",
+      "status": "PASS",
+      "evidence": "w2_metrics.json"
+    },
+    {
+      "check": "Notebook execution counts are complete and sequential",
+      "status": "PASS",
+      "evidence": "notebooks/W2_project.ipynb"
+    },
+    {
+      "check": "No notebook error outputs",
+      "status": "PASS",
+      "evidence": "saved notebook outputs"
+    },
+    {
+      "check": "At least three saved figures",
+      "status": "PASS",
+      "evidence": "saved notebook image outputs"
+    },
+    {
+      "check": "Management summary is 120–180 words",
+      "status": "PASS",
+      "evidence": "management_summary.txt"
+    },
+    {
+      "check": "Generated data and figure SHA-256 hashes match",
+      "status": "PASS",
+      "evidence": "artifact_manifest.json"
+    },
+    {
+      "check": "No source rows silently lost",
+      "status": "PASS",
+      "evidence": "validated_lines.csv.gz"
+    },
+    {
+      "check": "Row-group conservation",
+      "status": "PASS",
+      "evidence": "row_flow.csv"
+    },
+    {
+      "check": "Actual split files partition all source rows",
+      "status": "PASS",
+      "evidence": "data/splits/*.csv.gz"
+    },
+    {
+      "check": "Chronological bounds: train",
+      "status": "PASS",
+      "evidence": "protocol.json; actual split timestamps"
+    },
+    {
+      "check": "Chronological bounds: validation",
+      "status": "PASS",
+      "evidence": "protocol.json; actual split timestamps"
+    },
+    {
+      "check": "Chronological bounds: test",
+      "status": "PASS",
+      "evidence": "protocol.json; actual split timestamps"
+    },
+    {
+      "check": "No row or invoice overlap: train/validation",
+      "status": "PASS",
+      "evidence": "split_overlap.csv"
+    },
+    {
+      "check": "No row or invoice overlap: train/test",
+      "status": "PASS",
+      "evidence": "split_overlap.csv"
+    },
+    {
+      "check": "No row or invoice overlap: validation/test",
+      "status": "PASS",
+      "evidence": "split_overlap.csv"
+    },
+    {
+      "check": "Sampling preserves all lines of each selected invoice",
+      "status": "PASS",
+      "evidence": "invoice_sample_25pct.csv.gz"
+    },
+    {
+      "check": "Sample approximately one quarter of source rows",
+      "status": "PASS",
+      "evidence": "sample_comparison.csv"
+    },
+    {
+      "check": "Fitted mean and scale use train invoices only",
+      "status": "PASS",
+      "evidence": "preprocessing_parameters.json; invoice_preprocessing.csv"
+    },
+    {
+      "check": "Frozen training rule applied to every partition",
+      "status": "PASS",
+      "evidence": "invoice_preprocessing.csv"
+    },
+    {
+      "check": "Four or more contextual leakage risks",
+      "status": "PASS",
+      "evidence": "leakage_audit.csv"
+    },
+    {
+      "check": "Three or more grounded feedback entries",
+      "status": "PASS",
+      "evidence": "feedback_to_action.csv"
+    },
+    {
+      "check": "Dictionary and quality checks supplied",
+      "status": "PASS",
+      "evidence": "data_dictionary.csv; quality_checks.csv"
+    },
+    {
+      "check": "Supplemental PDF readable with all major sections",
+      "status": "PASS",
+      "evidence": "report\\GROUP_Medina_Castillo_W2_Report.pdf"
+    },
+    {
+      "check": "No broken font-command text in PDF",
+      "status": "PASS",
+      "evidence": "report\\GROUP_Medina_Castillo_W2_Report.pdf"
+    },
+    {
+      "check": "Final C1 presentation snapshot preserved",
+      "status": "PASS",
+      "evidence": "assessments/C1/presentation/"
+    },
+    {
+      "check": "No tracked candidate exceeds GitHub 100 MiB file limit",
+      "status": "PASS",
+      "evidence": "project file sizes"
+    }
+  ],
+  "pdf_pages": 11,
+  "summary_words": 141
+}

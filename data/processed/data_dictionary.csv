@@ -1,0 +1,17 @@
+variable,meaning_and_unit,expected_type,acceptable_values,missing_meaning
+InvoiceNo,Invoice identifier; C prefix marks a cancellation record,string,Nonblank; repeats across item lines,Not expected; cannot identify invoice if absent
+StockCode,"Source item/special-code identifier, not commercial category",string,Nonblank; merchandise-pattern rule is provisional,Not expected; flag rather than invent item
+Description,Recorded item description,nullable string,Free text; not a key,Unknown/unrecorded description; not proof of zero activity
+Quantity,Signed units on an invoice line,integer,Positive purchase; negative C record; other signs flagged,Not expected; cannot calculate line value
+InvoiceDate,Recorded invoice-line timestamp,datetime,2010-12-01 <= date < 2011-12-01,Not expected; cannot assign period
+UnitPrice,Recorded unit price in GBP,numeric,Positive for value measure; zero/negative retained outside it,Not expected; no price imputation
+CustomerID,Identifier linking recorded lines to a customer account,nullable integer,Positive identifier; not a continuous measurement,Unidentified purchase; no ID imputation
+Country,Customer country recorded on this line,string,Source labels; UK share uses row label,Meaning unknown if absent; not delivery destination
+source_row,"Stable position in unchanged case CSV, starting at 1",integer,"Unique, 1..516384",Not permitted; not a source transaction ID
+eligible_purchase,Matches all baseline purchase conditions,boolean,True/False,Not permitted
+row_group,Mutually exclusive analytical classification,category,priced_purchase; priced_C_record; other_retained,Not permitted
+line_value_gbp,Quantity times UnitPrice for eligible purchase lines,nullable numeric,Strictly positive when eligible,Undefined outside purchase scope; not recorded zero
+split,Prespecified chronological partition,category,train; validation; test,Not permitted
+value_gbp,Sum of eligible purchase value by known ID within stated window,numeric,"Positive; GBP, not net revenue or profit",No customer aggregate for missing ID
+K10_pct,Value of top ceil(0.10*N) IDs / value of all known IDs * 100,numeric,0..100; stated window and known-ID denominator,Undefined when no known-ID value
+ID_coverage_pct,Known-ID eligible value / all eligible purchase value * 100,numeric,"0..100; value-weighted, not fraction of rows",Undefined when no eligible value

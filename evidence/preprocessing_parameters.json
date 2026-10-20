@@ -1,0 +1,10 @@
+{
+  "feature": "log1p(invoice_value_gbp)",
+  "fit_partition": "train",
+  "fitted_invoice_count": 11040,
+  "mean": 5.50874260141285,
+  "scale": 1.1945441036581714,
+  "refit_on_validation_or_test": false,
+  "parameter_invariance_verified": true,
+  "K10_uses_original_GBP": true
+}

@@ -1,0 +1,3 @@
+dataset,source_lines,purchase_lines,known_customers,top_ids,eligible_value_gbp,known_value_gbp,K10_pct,ID_coverage_pct,UK_value_share_pct,K10_pct_difference_pp,ID_coverage_pct_difference_pp,UK_value_share_pct_difference_pp,fraction_source_rows_pct
+Complete available case,516384,500531,4293,430,9610990.56,8233040.5600000005,60.50013933127034,85.66276814655409,84.62150752544284,0.0,0.0,0.0,100.0
+Month-stratified invoice sample,130912,126768,2217,222,2362428.7900000005,2013070.9100000001,54.00836823974571,85.21191912836449,83.13320969983606,-6.491771091524633,-0.45084901818960077,-1.4882978256067787,25.351676271921672

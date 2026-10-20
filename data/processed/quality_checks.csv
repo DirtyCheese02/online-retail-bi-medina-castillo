@@ -1,0 +1,18 @@
+check_id,check,status,affected_count,treatment,justification
+Q01,Schema and numeric/time types,PASS,0,retain,Required fields and physical types verified
+Q02,Invalid/missing timestamps or outside case bounds,PASS,0,retain,Case is twelve complete calendar months
+Q03,Missing invoice or item identifier,PASS,0,retain,Invoice and source-code grouping require recorded keys
+Q04,Nonpositive unit prices,FLAG,2463,retain source; exclude from positive-value measures,Do not guess discount reason or substitute another price
+Q05,Nonpositive quantities,FLAG,10234,retain; separate eligible negative C records,Signed record meaning differs from a positive purchase
+Q06,Missing CustomerID,FLAG,127216,retain eligible value; exclude from customer rank,Coverage includes unidentified value; identity cannot be invented
+Q07,Missing description,FLAG,1439,retain if otherwise eligible,"StockCode, not description, supplies the item key"
+Q08,Exact repeated rows beyond first copy,FLAG,4989,retain baseline; compare deduplicated sensitivity,No line ID proves repeated rows erroneous
+Q09,Outside provisional merchandise-code pattern,FLAG,5072,retain source; exclude baseline; test alternative patterns,"Pattern is a scope assumption, not verified item classification"
+Q10,Negative quantity without C prefix,FLAG,1306,retain outside both eligible measures,Cannot safely classify as an eligible purchase or C cancellation
+Q11,Source-row conservation and disjoint partition violations,PASS,0,retain,One prepared record per source line; flags may overlap but row groups do not
+Q12,Eligible purchase invoices with multiple known IDs,PASS,0,retain,Invoice-level aggregation must not merge distinct known customers
+Q13,Invoice numbers with multiple timestamps,FLAG,43,retain; use min/max interval and check split boundaries,One InvoiceNo is not necessarily one timestamp; no silent timestamp replacement
+Q14,Customer IDs with multiple country labels,FLAG,8,retain country at line level; flag identity consistency,Do not assert a single residence or overwrite historical country labels
+Q15,Invoices crossing chronological partition boundaries,PASS,0,retain,All lines of a source invoice remain in one partition
+Q16,Missing quantities or prices,PASS,0,retain,No numeric imputation required
+Q17,Purchase invoices mixing identified and unidentified lines,PASS,0,retain,No ambiguous invoice-level ID assignment found
