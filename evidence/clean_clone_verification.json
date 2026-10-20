@@ -1,0 +1,11 @@
+{
+  "tested_analysis_commit": "ea5ceb35b1651a0c6d5a9dc39245088f32f8d4bd",
+  "method": "Fresh local git clone; current-interpreter fresh kernel; complete notebook execution, report-source generation and verifier rerun",
+  "notebook_code_cells_executed": 9,
+  "acceptance_checks_passed": 26,
+  "all_metrics_equal": true,
+  "all_generated_data_and_figure_hashes_equal": true,
+  "saved_notebook_analytical_outputs_equal": true,
+  "execution_timestamps": "Expected differences excluded from output comparison",
+  "report_source_bytes_equal": true
+}
