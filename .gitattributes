@@ -2,7 +2,7 @@
 *.py text eol=lf
 *.md text eol=lf
 *.tex text eol=lf
-*.json text eol=lf
+*.json -text
 *.ipynb text eol=lf
 *.csv -text
 *.gz -text
