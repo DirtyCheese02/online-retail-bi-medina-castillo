@@ -15,3 +15,6 @@ split,Prespecified chronological partition,category,train; validation; test,Not 
 value_gbp,Sum of eligible purchase value by known ID within stated window,numeric,"Positive; GBP, not net revenue or profit",No customer aggregate for missing ID
 K10_pct,Value of top ceil(0.10*N) IDs / value of all known IDs * 100,numeric,0..100; stated window and known-ID denominator,Undefined when no known-ID value
 ID_coverage_pct,Known-ID eligible value / all eligible purchase value * 100,numeric,"0..100; value-weighted, not fraction of rows",Undefined when no eligible value
+invoice_value_gbp,Sum of eligible positive purchase lines within one invoice; GBP,numeric,Strictly positive; not net invoice settlement,No aggregate for an invoice without eligible purchases
+log_invoice_value,Natural log of 1 + invoice_value_gbp expressed numerically in GBP,numeric,Finite and positive; descriptive preprocessing only,Not permitted for an eligible invoice
+scaled_log_value,(log_invoice_value - training mean) / training population SD; dimensionless,numeric,Finite real number; may be negative; parameters fixed from train,Not permitted; never a replacement for monetary value

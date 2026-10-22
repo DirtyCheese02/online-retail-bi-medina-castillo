@@ -1,0 +1,4 @@
+step,event,partition,passed,fitted_count
+1,fit train,train,True,11040
+2,"validation gate: finite values, positive invoices, unique invoice keys, frozen parameters",validation,True,11040
+3,test transformed after validation gate; no refit,test,True,11040

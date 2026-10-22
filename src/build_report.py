@@ -92,7 +92,7 @@ quality=pd.read_csv(P/'quality_checks.csv')
 chunks.append(r'{\small'+'\n'+table(['Check','Count / status','Treatment'],[
     (r.check_id+' '+r.check,f'{r.affected_count:,} / {r.status}',r.treatment) for r in quality.itertuples()],
     r'@{}P{.43\linewidth}P{.15\linewidth}Y@{}')+'}\n')
-chunks.append(f'Invoice timestamps vary within {D["invoice_multiple_timestamps"]} InvoiceNo values; the longest observed interval is {D["invoice_timestamp_span_max_minutes"]:.0f} minutes, and {D["invoice_timestamp_exceptions_cross_day"]} of these intervals cross a calendar day. We preserve original timestamps and use first/last times to verify boundaries. None crosses the specified train/validation/test boundaries. Eight IDs have multiple country labels. We retain country at line level rather than asserting fixed residence or overwriting an ID\'s history. Exception tables list the affected identifiers and evidence.\n')
+chunks.append(f'Invoice timestamps vary within {D["invoice_multiple_timestamps"]} InvoiceNo values; the maximum observed span, in minutes, is {D["invoice_timestamp_span_max_minutes"]:.0f}, and {D["invoice_timestamp_exceptions_cross_day"]} of these intervals cross a calendar day. We preserve original timestamps and use first/last times to verify boundaries. None crosses the specified train/validation/test boundaries. Eight IDs have multiple country labels. We retain country at line level rather than asserting fixed residence or overwriting an ID\'s history. Exception tables list the affected identifiers and evidence.\n')
 chunks.append(r'''\clearpage
 \sectionhead{4\quad Feedback-to-action and changes to conclusions}
 The entries below are self-audits or W2 extensions. They are not attributed to the instructor. The full table includes notebook sections, generated evidence paths and the reason for each action.
@@ -138,6 +138,8 @@ chunks.append(r'{\small'+'\n'+table(['Month','Invoices: available / sampled','Ro
 chunks.append(r'''\clearpage
 \sectionhead{7\quad Temporal holdout and validation procedure}
 The proposed decision time is after month-end. Completed invoices up to the cut-off are available for account review. Full-year future totals and ranks would not be legitimate earlier-period features. We partition the complete source case, not its 25\% invoice sample. All row groups, including missing-ID and non-measure records, are saved in the actual split files.
+
+First, October--November is reserved as test. The earlier December--September development pool is the initial training pool before validation is removed. Second, August--September is carved out of that pool as validation, leaving December--July for fitting. Validation contains no test rows. This hierarchy and its parent-relative proportions are exported in \path{data/processed/split_hierarchy.csv}.
 ''')
 splits=pd.read_csv(P/'split_summary.csv')
 chunks.append(table(['Partition / inclusive months','Source rows','Row share','Invoices','Eligible known IDs'],[
@@ -154,8 +156,21 @@ For each eligible invoice we sum its positive purchase value, apply log1p and fi
 ''')
 pre=pd.read_csv(P/'preprocessing_by_split.csv')
 chunks.append(table(['Partition','Eligible invoices','Mean scaled log value','SD scaled log value'],[(r.split,f'{r.invoices:,}',f'{r.mean_scaled_value:.4f}',f'{r.sd_scaled_value_ddof0:.4f}') for r in pre.itertuples()]))
-chunks.append(f'The fitted mean is {T["mean"]:.6f} and scale {T["scale"]:.6f}, estimated from {T["fitted_invoice_count"]:,} training invoices. Assertions verify identical parameters after validation and test transforms. Validation confirms the fixed rule can be applied; no model or transformation is selected using test information. Nonzero held-period means are distribution diagnostics, not a reason to refit on them.\n')
+chunks.append(f'The fitted mean is {T["mean"]:.6f} and scale {T["scale"]:.6f}, estimated from {T["fitted_invoice_count"]:,} training invoices. The validation gate requires finite transformed values, positive eligible invoice totals, unique invoice keys and unchanged training parameters. Failure stops execution before test transformation. The ordered fit, validation gate and test transformation are exported in \\path{{data/processed/validation_execution.csv}}. These are applicability checks; no predictive-performance target or test-driven tuning is introduced. Nonzero held-period means do not justify refitting on them.\n')
 chunks.append(r'''\textbf{Exposure limit.} W1/C1 already inspected all twelve months. The protocol was fixed before W2 result tables, but the current holdout cannot become an untouched prospective test by relabeling it. It is a descriptive robustness comparison. We report monthly KPIs rather than interpreting unequal-duration partition totals as comparable. No predictive model, outcome label or accuracy metric is produced.
+\clearpage
+\sectionhead{7\quad Temporal holdout: descriptive findings}
+After validation, we recalculate K10 and coverage separately within each month using only that month's purchases and known IDs. Each month receives equal weight in the summary below. These are means of monthly shares, not a pooled-period K10 or a comparison of raw totals from unequal windows.
+''')
+held=pd.read_csv(P/'holdout_robustness.csv')
+chunks.append(table(['Partition / months','Mean monthly K10','Monthly K10 range','Mean monthly ID coverage'],[
+    (r.split+f' / {r.months}',f'{r.mean_monthly_K10_pct:.2f}%',f'{r.min_monthly_K10_pct:.2f}% -- {r.max_monthly_K10_pct:.2f}%',f'{r.mean_monthly_ID_coverage_pct:.2f}%') for r in held.itertuples()]))
+h=held.loc[held.split.eq('test')].iloc[0]
+chunks.append(f'Test mean monthly K10 differs from training by {h.mean_K10_difference_from_train_pp:+.2f} percentage points. Concentration remains substantial in the held months, while its level varies. The annual K10 of {B["K10_pct"]:.2f}\\% pools longer customer histories; it is not a target expected in every month.\n')
+chunks.append(r'''\textbf{Interpretation.} Observed customer mix, invoice histories and ID coverage differ between months. These descriptive differences do not identify a cause, establish a seasonal effect or measure predictive accuracy. The detailed monthly table includes each denominator and is saved as \path{data/processed/holdout_monthly_kpi.csv}.
+
+\textbf{Audit amendment, 21 October 2026.} The explicit development hierarchy, ordered validation gate and this holdout table strengthen the evidence for criterion F. They preserve the previously fixed dates, eligibility and scaler. They were added after prior full-case exposure; no claim of newly unseen test data is made, and no observed difference selects a transformation or rule. A genuinely later period remains necessary for prospective evaluation.
+
 \clearpage
 \sectionhead{8\quad Context-specific leakage audit}
 The audit reports observed risks, conditional future risks and implemented safeguards. Status is contextual: shared customer IDs do not alone imply inappropriate leakage for the same-account scenario, but invalidate an independent new-customer claim.

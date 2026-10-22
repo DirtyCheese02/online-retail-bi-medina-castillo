@@ -27,6 +27,11 @@
       "evidence": "management_summary.txt"
     },
     {
+      "check": "Notebook closes with the management summary",
+      "status": "PASS",
+      "evidence": "last notebook cell and saved Markdown output"
+    },
+    {
       "check": "Generated data and figure SHA-256 hashes match",
       "status": "PASS",
       "evidence": "artifact_manifest.json"
@@ -45,6 +50,11 @@
       "check": "Actual split files partition all source rows",
       "status": "PASS",
       "evidence": "data/splits/*.csv.gz"
+    },
+    {
+      "check": "Validation is carved entirely from earlier development pool",
+      "status": "PASS",
+      "evidence": "split_hierarchy.csv; actual split files"
     },
     {
       "check": "Chronological bounds: train",
@@ -87,6 +97,16 @@
       "evidence": "sample_comparison.csv"
     },
     {
+      "check": "Invoice sample follows fixed monthly quarter counts",
+      "status": "PASS",
+      "evidence": "sample_strata.csv"
+    },
+    {
+      "check": "Sample KPI and country proportion match saved sample",
+      "status": "PASS",
+      "evidence": "actual invoice sample; sample_comparison.csv"
+    },
+    {
       "check": "Fitted mean and scale use train invoices only",
       "status": "PASS",
       "evidence": "preprocessing_parameters.json; invoice_preprocessing.csv"
@@ -95,6 +115,16 @@
       "check": "Frozen training rule applied to every partition",
       "status": "PASS",
       "evidence": "invoice_preprocessing.csv"
+    },
+    {
+      "check": "Ordered validation gate before test with no refit",
+      "status": "PASS",
+      "evidence": "validation_execution.csv; preprocess execution order"
+    },
+    {
+      "check": "Holdout compares monthly shares with explicit denominators",
+      "status": "PASS",
+      "evidence": "holdout_monthly_kpi.csv; holdout_robustness.csv"
     },
     {
       "check": "Four or more contextual leakage risks",
@@ -122,6 +152,11 @@
       "evidence": "report\\GROUP_Medina_Castillo_W2_Report.pdf"
     },
     {
+      "check": "PDF reports regenerated descriptive holdout findings",
+      "status": "PASS",
+      "evidence": "report PDF; holdout_robustness.csv"
+    },
+    {
       "check": "Final C1 presentation snapshot preserved",
       "status": "PASS",
       "evidence": "assessments/C1/presentation/"
@@ -132,6 +167,6 @@
       "evidence": "project file sizes"
     }
   ],
-  "pdf_pages": 11,
+  "pdf_pages": 12,
   "summary_words": 141
 }

@@ -72,10 +72,14 @@ Seed **4232026** selects 25% of invoices within month, keeping all their lines. 
 
 Chronological boundaries are fixed: training December 2010–July 2011; validation August–September; test October–November. Source-row counts are 285,421 / 85,510 / 145,453. No row, invoice or exact source-record hash crosses partitions. Customer recurrence is reported and allowed for the same-account time scenario; this does not evaluate new-customer generalization. Period-specific aggregates prevent future full-case profiles from entering earlier decisions.
 
+Construction is nested: reserve test first, then carve validation from the December–September development pool, leaving the final training fit set. `split_hierarchy.csv` reports both stages and parent-relative proportions. `validation_execution.csv` records the training fit, a structural validation gate and the later test transform without refitting. Failed applicability checks stop execution before test transformation.
+
+`holdout_monthly_kpi.csv` and `holdout_robustness.csv` make the descriptive assessment explicit: K10 and ID coverage are recalculated within each month, then equally weighted monthly means/ranges are compared across partitions. They are not pooled-window KPIs or predictive scores. The 21 October audit added these evidence tables after earlier full-case exposure, retaining the fixed rules and dates.
+
 The entire period was explored in W1/C1. The held periods are descriptive robustness checks with prior exposure, not pristine or prospective test data. No model is trained or tuned. A StandardScaler on log1p eligible invoice value is fit only on training invoices and applied unchanged to validation/test. K10 uses original GBP throughout. No test data select a transformation, threshold or feature.
 
 ## Submission traceability
 
-W1/C1 snapshots were committed before W2 development. The final submission is tagged **`w2-submission`**. Retrieve its immutable commit with `git rev-parse w2-submission^{commit}` and submit that full SHA with the repository link; the final handoff message supplies the direct tree URL. A commit's own hash is not embedded inside itself.
+W1/C1 snapshots were committed before W2 development. The original W2 version is preserved at **`w2-submission`**. The revised delivery after the rubric audit is tagged **`w2-audited-2026-10-21`**. Retrieve its immutable commit with `git rev-parse w2-audited-2026-10-21^{commit}` and submit that full SHA with the repository link; the final handoff message supplies the direct tree URL. A commit's own hash is not embedded inside itself. See `evidence/W2_AUDIT.md` for findings, corrections and remaining limitations; no grade is guaranteed.
 
 The original rubric/course notebooks are referenced in the submission but are not republished. Earlier teacher-related statements inside assessment snapshots are historical records. The W2 feedback table identifies self-audits explicitly. The team remains responsible for reviewing and defending the work; automated checks are not represented as personal student verification.

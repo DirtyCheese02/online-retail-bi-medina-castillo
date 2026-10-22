@@ -130,6 +130,9 @@ def dictionary() -> pd.DataFrame:
       ('value_gbp','Sum of eligible purchase value by known ID within stated window','numeric','Positive; GBP, not net revenue or profit','No customer aggregate for missing ID'),
       ('K10_pct','Value of top ceil(0.10*N) IDs / value of all known IDs * 100','numeric','0..100; stated window and known-ID denominator','Undefined when no known-ID value'),
       ('ID_coverage_pct','Known-ID eligible value / all eligible purchase value * 100','numeric','0..100; value-weighted, not fraction of rows','Undefined when no eligible value'),
+      ('invoice_value_gbp','Sum of eligible positive purchase lines within one invoice; GBP','numeric','Strictly positive; not net invoice settlement','No aggregate for an invoice without eligible purchases'),
+      ('log_invoice_value','Natural log of 1 + invoice_value_gbp expressed numerically in GBP','numeric','Finite and positive; descriptive preprocessing only','Not permitted for an eligible invoice'),
+      ('scaled_log_value','(log_invoice_value - training mean) / training population SD; dimensionless','numeric','Finite real number; may be negative; parameters fixed from train','Not permitted; never a replacement for monetary value'),
     ]
     result=pd.DataFrame(rows,columns=['variable','meaning_and_unit','expected_type','acceptable_values','missing_meaning'])
     export_csv(result,'data_dictionary.csv'); return result
@@ -268,7 +271,23 @@ def sample_invoices(d: pd.DataFrame) -> tuple[pd.DataFrame,pd.DataFrame,pd.DataF
 
 
 def make_splits(d: pd.DataFrame) -> tuple[dict,pd.DataFrame,pd.DataFrame]:
-    splits={key:d.loc[d.split.eq(key)].copy() for key in SPLITS}
+    # First reserve test; validation is then carved out of the earlier development pool.
+    development=d.loc[d.InvoiceDate.lt(SPLITS['test'][0])].copy()
+    test=d.loc[d.InvoiceDate.ge(SPLITS['test'][0])].copy()
+    splits={'train':development.loc[development.InvoiceDate.lt(SPLITS['validation'][0])].copy(),
+            'validation':development.loc[development.InvoiceDate.ge(SPLITS['validation'][0])].copy(),
+            'test':test}
+    assert set(splits['train'].source_row).isdisjoint(splits['validation'].source_row)
+    assert set(development.source_row)==set(splits['train'].source_row)|set(splits['validation'].source_row)
+    assert set(development.source_row).isdisjoint(test.source_row)
+    hierarchy=pd.DataFrame([
+        ('1: reserve test','development',len(development),len(d),'Earlier pool available for training/validation; not the scaler fit set'),
+        ('1: reserve test','test',len(test),len(d),'Later assessment period; excluded from development'),
+        ('2: carve validation from development','train',len(splits['train']),len(development),'Fit preprocessing only here'),
+        ('2: carve validation from development','validation',len(splits['validation']),len(development),'Check the fixed procedure before test transformation'),
+    ],columns=['stage','subset','rows','parent_rows','role'])
+    hierarchy['parent_fraction_pct']=100*hierarchy.rows/hierarchy.parent_rows
+    export_csv(hierarchy,'split_hierarchy.csv')
     summary=[]
     for key,frame in splits.items():
         export_gzip(frame,ROOT/f'data/splits/{key}.csv.gz')
@@ -302,21 +321,55 @@ def preprocess(splits: dict) -> tuple[pd.DataFrame,dict]:
         inv['split']=key;frames[key]=inv
     scaler=StandardScaler().fit(frames['train'][['log_invoice_value']])
     params_before=(scaler.mean_.copy(),scaler.scale_.copy(),int(scaler.n_samples_seen_))
-    rows=[]
+    rows=[]; events=[]
+    events.append({'step':1,'event':'fit train','partition':'train','passed':True,'fitted_count':params_before[2]})
     for key in ['train','validation','test']:
+        if key=='test':
+            assert len(events)==2 and events[-1]['passed']
         f=frames[key];f['scaled_log_value']=scaler.transform(f[['log_invoice_value']]).ravel()
         assert np.array_equal(params_before[0],scaler.mean_) and np.array_equal(params_before[1],scaler.scale_)
         assert int(scaler.n_samples_seen_)==params_before[2]
+        assert np.isfinite(f[['invoice_value_gbp','log_invoice_value','scaled_log_value']].to_numpy()).all()
+        assert f.invoice_value_gbp.gt(0).all() and f.InvoiceNo.is_unique
+        if key=='validation':
+            # Structural applicability is the validation criterion; no distribution-based tuning.
+            events.append({'step':2,'event':'validation gate: finite values, positive invoices, unique invoice keys, frozen parameters',
+                           'partition':key,'passed':True,'fitted_count':int(scaler.n_samples_seen_)})
+        if key=='test':
+            events.append({'step':3,'event':'test transformed after validation gate; no refit',
+                           'partition':key,'passed':True,'fitted_count':int(scaler.n_samples_seen_)})
         rows.append((key,len(f),float(f.log_invoice_value.mean()),float(f.scaled_log_value.mean()),float(f.scaled_log_value.std(ddof=0))))
     assert abs(frames['train'].scaled_log_value.mean())<1e-10
     assert abs(frames['train'].scaled_log_value.std(ddof=0)-1)<1e-10
     table=pd.DataFrame(rows,columns=['split','invoices','mean_log_value','mean_scaled_value','sd_scaled_value_ddof0'])
     all_inv=pd.concat(frames.values(),ignore_index=True);export_csv(all_inv,'invoice_preprocessing.csv');export_csv(table,'preprocessing_by_split.csv')
+    export_csv(pd.DataFrame(events),'validation_execution.csv')
     params={'feature':'log1p(invoice_value_gbp)','fit_partition':'train','fitted_invoice_count':params_before[2],
             'mean':float(scaler.mean_[0]),'scale':float(scaler.scale_[0]),'refit_on_validation_or_test':False,
             'parameter_invariance_verified':True,'K10_uses_original_GBP':True}
     (ROOT/'evidence/preprocessing_parameters.json').write_text(json.dumps(params,indent=2)+'\n')
     return table,params
+
+
+def holdout_robustness(splits: dict) -> pd.DataFrame:
+    """Compare month-level descriptions after the validation gate; never tune a rule."""
+    execution=pd.read_csv(OUT/'validation_execution.csv')
+    assert execution.step.tolist()==[1,2,3] and execution.passed.all()
+    rows=[]
+    for key in ['train','validation','test']:
+        for month,frame in splits[key].groupby('month',sort=True):
+            rows.append({'split':key,'month':month,**kpis(frame)})
+    monthly=pd.DataFrame(rows)
+    export_csv(monthly,'holdout_monthly_kpi.csv')
+    summary=monthly.groupby('split',sort=False).agg(
+        months=('month','size'),mean_monthly_K10_pct=('K10_pct','mean'),
+        min_monthly_K10_pct=('K10_pct','min'),max_monthly_K10_pct=('K10_pct','max'),
+        mean_monthly_ID_coverage_pct=('ID_coverage_pct','mean'),
+        min_known_ids=('known_customers','min'),max_known_ids=('known_customers','max')).reset_index()
+    reference=float(summary.loc[summary.split.eq('train'),'mean_monthly_K10_pct'].iloc[0])
+    summary['mean_K10_difference_from_train_pp']=summary.mean_monthly_K10_pct-reference
+    export_csv(summary,'holdout_robustness.csv')
+    return summary
 
 
 def leakage_audit(d: pd.DataFrame,overlap: pd.DataFrame,params: dict) -> pd.DataFrame:
@@ -338,7 +391,7 @@ def management_summary(stats: dict,comp: pd.DataFrame,details: dict) -> str:
     b=stats['baseline'];s=comp.iloc[1]
     text=(f'Our historical account-review question and K10 definition remain unchanged from C1. '
           f'The complete case still contains {b["known_customers"]:,} identifiable customers: the highest-value 10% account for {b["K10_pct"]:.1f}% of known purchase value, while IDs cover {b["ID_coverage_pct"]:.1f}% of eligible value. '
-          f'W2 adds explicit validation, a month-stratified invoice sample and chronological development, validation and test partitions. '
+          f'W2 adds explicit validation, a month-stratified invoice sample and chronological training, validation and test partitions. '
           f'We retained {details["invoice_multiple_timestamps"]} invoices with multiple timestamps and {details["customer_multiple_countries"]} IDs with multiple country labels, documenting their interpretation rather than overwriting records. '
           f'The sample contains {100*s.source_lines/b["source_lines"]:.1f}% of source lines and yields K10 of {s.K10_pct:.1f}%, illustrating the effect of observing fewer invoices per customer. '
           f'Train-only preprocessing prevents held periods from determining the fitted scale. '
@@ -367,7 +420,7 @@ def finalize(stats,details,comparison,params,quality,split_summary) -> dict:
 def run() -> dict:
     freeze_protocol();raw,d=load_and_prepare();dictionary();q,detail=validate(raw,d);feedback_table(detail)
     stats,monthly,_=analyze(d);figures(d,monthly);_,_,comp=sample_invoices(d)
-    splits,summary,overlap=make_splits(d);_,params=preprocess(splits);leakage_audit(d,overlap,params)
+    splits,summary,overlap=make_splits(d);_,params=preprocess(splits);holdout_robustness(splits);leakage_audit(d,overlap,params)
     return finalize(stats,detail,comp,params,q,summary)
 
 

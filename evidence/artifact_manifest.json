@@ -16,13 +16,23 @@
   },
   {
     "path": "data/processed/data_dictionary.csv",
-    "bytes": 2383,
-    "sha256": "e8f922f7f0ac6134518948158d124b438e7a938cfe02eea01ad9d563b490e35a"
+    "bytes": 2979,
+    "sha256": "531f7eee4947a169faea2fcb8019fe124beebe0bf8738820798b9c27411862d9"
   },
   {
     "path": "data/processed/feedback_to_action.csv",
     "bytes": 1597,
     "sha256": "b04c2894d396e93dc6b28378399cb97d9ccaec41c2e6a4d1b85441b3c3419947"
+  },
+  {
+    "path": "data/processed/holdout_monthly_kpi.csv",
+    "bytes": 1541,
+    "sha256": "9a531ab8420bb2e027f73b2e5c836eba69d5c7b3eb0ec3fb52d1d55529838bdd"
+  },
+  {
+    "path": "data/processed/holdout_robustness.csv",
+    "bytes": 484,
+    "sha256": "9f00eceb973fd61006354d90190977f142afd80c21d3d5237c5daa48c1c12a8b"
   },
   {
     "path": "data/processed/invoice_preprocessing.csv",
@@ -85,6 +95,11 @@
     "sha256": "cbcba6aabcf882a80bba25b1fd315ae59c73145440f0d9fbaf9249c89ba242d5"
   },
   {
+    "path": "data/processed/split_hierarchy.csv",
+    "bytes": 529,
+    "sha256": "6a735eb67f92f292f9962e79f944acd6c0796eaba6e9dc61c022cc3e13901486"
+  },
+  {
     "path": "data/processed/split_membership.csv",
     "bytes": 11024015,
     "sha256": "47d7b8e6d6ee01dfc1b29ac79e73fc7498a16809719b5ea9b92bd5d0544a5952"
@@ -103,6 +118,11 @@
     "path": "data/processed/validated_lines.csv.gz",
     "bytes": 11031970,
     "sha256": "dc421445fae29a19d36dd0781532e6028ca059c3f03a4e2236829795fa79b5cd"
+  },
+  {
+    "path": "data/processed/validation_execution.csv",
+    "bytes": 257,
+    "sha256": "93c5357466ea03ff588d200957caa763ed14f2d44bce9c1e7363f8ef165e7f5d"
   },
   {
     "path": "data/processed/w2_metrics.json",

@@ -112,7 +112,7 @@ Q17 Purchase invoices mixing identified and unidentified lines & 0 / PASS & reta
 \bottomrule\end{tabularx}
 }
 
-Invoice timestamps vary within 43 InvoiceNo values; the longest observed interval is 1 minutes, and 0 of these intervals cross a calendar day. We preserve original timestamps and use first/last times to verify boundaries. None crosses the specified train/validation/test boundaries. Eight IDs have multiple country labels. We retain country at line level rather than asserting fixed residence or overwriting an ID's history. Exception tables list the affected identifiers and evidence.
+Invoice timestamps vary within 43 InvoiceNo values; the maximum observed span, in minutes, is 1, and 0 of these intervals cross a calendar day. We preserve original timestamps and use first/last times to verify boundaries. None crosses the specified train/validation/test boundaries. Eight IDs have multiple country labels. We retain country at line level rather than asserting fixed residence or overwriting an ID's history. Exception tables list the affected identifiers and evidence.
 
 \clearpage
 \sectionhead{4\quad Feedback-to-action and changes to conclusions}
@@ -198,6 +198,8 @@ UK share uses the recorded country of each eligible purchase line and includes u
 \sectionhead{7\quad Temporal holdout and validation procedure}
 The proposed decision time is after month-end. Completed invoices up to the cut-off are available for account review. Full-year future totals and ranks would not be legitimate earlier-period features. We partition the complete source case, not its 25\% invoice sample. All row groups, including missing-ID and non-measure records, are saved in the actual split files.
 
+First, October--November is reserved as test. The earlier December--September development pool is the initial training pool before validation is removed. Second, August--September is carved out of that pool as validation, leaving December--July for fitting. Validation contains no test rows. This hierarchy and its parent-relative proportions are exported in \path{data/processed/split_hierarchy.csv}.
+
 \begin{tabularx}{\linewidth}{@{}P{.34\linewidth}rrrr@{}}
 \toprule
 \textbf{Partition / inclusive months} & \textbf{Source rows} & \textbf{Row share} & \textbf{Invoices} & \textbf{Eligible known IDs} \\ \midrule
@@ -229,9 +231,27 @@ validation & 3,157 & 0.1457 & 0.9591 \\
 test & 4,756 & 0.0871 & 0.9672 \\
 \bottomrule\end{tabularx}
 
-The fitted mean is 5.508743 and scale 1.194544, estimated from 11,040 training invoices. Assertions verify identical parameters after validation and test transforms. Validation confirms the fixed rule can be applied; no model or transformation is selected using test information. Nonzero held-period means are distribution diagnostics, not a reason to refit on them.
+The fitted mean is 5.508743 and scale 1.194544, estimated from 11,040 training invoices. The validation gate requires finite transformed values, positive eligible invoice totals, unique invoice keys and unchanged training parameters. Failure stops execution before test transformation. The ordered fit, validation gate and test transformation are exported in \path{data/processed/validation_execution.csv}. These are applicability checks; no predictive-performance target or test-driven tuning is introduced. Nonzero held-period means do not justify refitting on them.
 
 \textbf{Exposure limit.} W1/C1 already inspected all twelve months. The protocol was fixed before W2 result tables, but the current holdout cannot become an untouched prospective test by relabeling it. It is a descriptive robustness comparison. We report monthly KPIs rather than interpreting unequal-duration partition totals as comparable. No predictive model, outcome label or accuracy metric is produced.
+\clearpage
+\sectionhead{7\quad Temporal holdout: descriptive findings}
+After validation, we recalculate K10 and coverage separately within each month using only that month's purchases and known IDs. Each month receives equal weight in the summary below. These are means of monthly shares, not a pooled-period K10 or a comparison of raw totals from unequal windows.
+
+\begin{tabularx}{\linewidth}{@{}YYYY@{}}
+\toprule
+\textbf{Partition / months} & \textbf{Mean monthly K10} & \textbf{Monthly K10 range} & \textbf{Mean monthly ID coverage} \\ \midrule
+train / 8 & 48.91\% & 42.48\% -- 57.21\% & 85.34\% \\
+validation / 2 & 51.01\% & 50.67\% -- 51.34\% & 89.72\% \\
+test / 2 & 49.28\% & 47.79\% -- 50.77\% & 84.81\% \\
+\bottomrule\end{tabularx}
+
+Test mean monthly K10 differs from training by +0.37 percentage points. Concentration remains substantial in the held months, while its level varies. The annual K10 of 60.50\% pools longer customer histories; it is not a target expected in every month.
+
+\textbf{Interpretation.} Observed customer mix, invoice histories and ID coverage differ between months. These descriptive differences do not identify a cause, establish a seasonal effect or measure predictive accuracy. The detailed monthly table includes each denominator and is saved as \path{data/processed/holdout_monthly_kpi.csv}.
+
+\textbf{Audit amendment, 21 October 2026.} The explicit development hierarchy, ordered validation gate and this holdout table strengthen the evidence for criterion F. They preserve the previously fixed dates, eligibility and scaler. They were added after prior full-case exposure; no claim of newly unseen test data is made, and no observed difference selects a transformation or rule. A genuinely later period remains necessary for prospective evaluation.
+
 \clearpage
 \sectionhead{8\quad Context-specific leakage audit}
 The audit reports observed risks, conditional future risks and implemented safeguards. Status is contextual: shared customer IDs do not alone imply inappropriate leakage for the same-account scenario, but invalidate an independent new-customer claim.
@@ -254,7 +274,7 @@ A future predictive task must specify an outcome and horizon, and restrict input
 \clearpage
 \sectionhead{9\quad Management summary}
 
-Our historical account-review question and K10 definition remain unchanged from C1. The complete case still contains 4,293 identifiable customers: the highest-value 10\% account for 60.5\% of known purchase value, while IDs cover 85.7\% of eligible value. W2 adds explicit validation, a month-stratified invoice sample and chronological development, validation and test partitions. We retained 43 invoices with multiple timestamps and 8 IDs with multiple country labels, documenting their interpretation rather than overwriting records. The sample contains 25.4\% of source lines and yields K10 of 54.0\%, illustrating the effect of observing fewer invoices per customer. Train-only preprocessing prevents held periods from determining the fitted scale. However, missing IDs, provisional product codes and prior exploration of all periods still limit generalization. We recommend reviewing major accounts and ID capture together, then obtaining recent transactions and verified identity/code definitions before operational use or prospective evaluation.
+Our historical account-review question and K10 definition remain unchanged from C1. The complete case still contains 4,293 identifiable customers: the highest-value 10\% account for 60.5\% of known purchase value, while IDs cover 85.7\% of eligible value. W2 adds explicit validation, a month-stratified invoice sample and chronological training, validation and test partitions. We retained 43 invoices with multiple timestamps and 8 IDs with multiple country labels, documenting their interpretation rather than overwriting records. The sample contains 25.4\% of source lines and yields K10 of 54.0\%, illustrating the effect of observing fewer invoices per customer. Train-only preprocessing prevents held periods from determining the fitted scale. However, missing IDs, provisional product codes and prior exploration of all periods still limit generalization. We recommend reviewing major accounts and ID capture together, then obtaining recent transactions and verified identity/code definitions before operational use or prospective evaluation.
 
 \sectionhead{10\quad Process record and rubric evidence}
 \subhead{Decisions and checks}

@@ -100,7 +100,7 @@ display(comparison[['dataset','source_lines','known_customers','top_ids','fracti
 s=comparison.iloc[1]
 display(Markdown(f"""**Interpretation.** The sample contains {len(sample):,} rows ({s.fraction_source_rows_pct:.2f}% of the available case) and {s.known_customers:,.0f} known IDs. Sample K10 is {s.K10_pct:.2f}%, a difference of {s.K10_pct_difference_pp:.2f} percentage points. Coverage differs by {s.ID_coverage_pct_difference_pp:.2f} points and UK value share by {s.UK_value_share_pct_difference_pp:.2f} points. These differences describe this one fixed sample; they are not confidence limits or evidence of systematic bias. The smaller customer history changes the estimand's observed population. We therefore retain the complete case for the main descriptive result and use the subsample only to demonstrate sampling effects. Sampling representativeness and train/test information boundaries answer different questions."""))''')
 md('''## 6. Chronological holdout and train-only preprocessing
-The decision moment is a review **after month-end**, when recorded invoices up to the cut-off are available. We preserve the direction past → later. Training uses December–July, validation August–September and test October–November. Eight calendar months do not imply 80% of rows; year-end activity is larger. These dates were chosen before W2 result inspection and are not optimized from the test.
+The decision moment is a review **after month-end**, when recorded invoices up to the cut-off are available. We preserve the direction past → later. First reserve October–November as test, leaving December–September as the **development pool (the initial training pool before validation is removed)**. Then carve August–September validation out of that earlier pool, leaving December–July as the actual training fit set. Validation is therefore drawn entirely from development, never from test. Eight calendar months do not imply 80% of rows; year-end activity is larger. These dates were chosen before W2 result inspection and are not optimized from the test.
 
 This is a descriptive robustness design, not a predictive accuracy experiment. W1/C1 already examined the test months. The held partitions are separate by source row and invoice; they are not statistically independent customer populations. Customer recurrence is intentional for reviewing existing accounts over time. Generalization to entirely new customers would require grouped validation instead. We report customer overlap so it cannot be mistaken for independence.
 
@@ -108,26 +108,35 @@ The partitions are constructed from the **complete case, not the sampling demons
 
 For the preprocessing demonstration, an eligible invoice's completed purchase value is available at a later month-end review. We apply log1p and fit StandardScaler on training invoices only; validation and test receive the unchanged rule. This could support a future order-size descriptor. It would leak information if used to predict that same invoice's value before it occurred. Standardization is not needed to compute K10 and does not replace GBP in the KPI.''')
 code('''splits, split_summary, overlap = w2.make_splits(data)
+display(pd.read_csv(w2.OUT/'split_hierarchy.csv'))
 display(split_summary)
 display(overlap)
 preprocessing_table, preprocessing_parameters = w2.preprocess(splits)
 display(pd.DataFrame([preprocessing_parameters]))
 display(preprocessing_table)
+display(pd.read_csv(w2.OUT/'validation_execution.csv'))
 print('Validation inspected after the train-only fit; test transformed afterward without refitting.')
 print('No model, target, model selection or predictive performance score is computed.')''')
-md('''**Validation decision.** We inspect whether validation can be transformed under the fixed rule and whether the train-fitted parameters remain unchanged. We keep the prespecified transformation: there is no predictive objective or tuning criterion in W2. The same rule is then applied to test without refit. Nonzero validation/test means are expected under changed invoice distributions; they do not justify refitting on the test. A genuinely later dataset, not previously explored, is still needed before claiming prospective validity.''')
+md('''**Validation decision.** The implemented validation gate requires finite transformed values, positive eligible invoice totals, unique invoice keys and unchanged train-fitted parameters. If any fails, execution stops before transforming test. These are applicability checks, not predictive-performance targets. We keep the prespecified transformation: there is no predictive objective or tuning criterion in W2. Nonzero validation/test means are expected under changed invoice distributions; they do not justify refitting on test.
+
+**Descriptive holdout assessment.** After that gate, we recalculate K10 and coverage using each month's own purchases and IDs. We summarize the monthly results within train, validation and test; each calendar month has equal weight in these means. This is not the K10 of a pooled partition, and no total from an eight-month window is compared with a two-month total. The audit on 21 October adds this explicit reporting and execution evidence; it does not claim these results were unseen in W1/C1. No observed difference selects a rule, threshold or transformation.''')
+code('''holdout = w2.holdout_robustness(splits)
+display(pd.read_csv(w2.OUT/'holdout_monthly_kpi.csv')[['split','month','known_customers','K10_pct','ID_coverage_pct']])
+display(holdout)
+train_h, val_h, test_h = [holdout.loc[holdout.split.eq(k)].iloc[0] for k in ['train','validation','test']]
+display(Markdown(f"""**Holdout finding.** Mean monthly K10 is {train_h.mean_monthly_K10_pct:.2f}% in training, {val_h.mean_monthly_K10_pct:.2f}% in validation and {test_h.mean_monthly_K10_pct:.2f}% in test. The test monthly range is {test_h.min_monthly_K10_pct:.2f}–{test_h.max_monthly_K10_pct:.2f}%; its mean differs from training by {test_h.mean_K10_difference_from_train_pp:+.2f} percentage points. Concentration remains substantial in the held months, but its level varies. The annual K10 of {b['K10_pct']:.2f}% aggregates longer customer histories and is not the expected value for each month. Different observed accounts, coverage and activity prevent attributing a difference to a single cause. Two previously explored test months do not establish prospective stability; recent, genuinely later data remain necessary."""))''')
 md('''## 7. Contextual leakage audit
 The table distinguishes an observed overlap, an actual information violation and a hypothetical future misuse. A shared CustomerID is not automatically inappropriate for the stated same-account time scenario, but it precludes a claim of independent new-customer evaluation. Target-derived leakage is assessed conditionally because the present project has no predictive target.''')
 code('''leakage = w2.leakage_audit(data, overlap, preprocessing_parameters)
 display(leakage)''')
-md('''## 8. Management interpretation and next step
+md('''## 9. Management interpretation and next step
 The summary below is generated from verified outputs and has 120–180 words. Observed facts, scope assumptions and proposed managerial actions remain distinct.''')
 code('''results = w2.finalize(stats, quality_details, comparison, preprocessing_parameters, quality, split_summary)
 summary = w2.management_summary(stats, comparison, quality_details)
 print('Management summary word count:',len(summary.split()))
 display(Markdown(summary))
 print('Verified outputs:', len(json.loads((ROOT/'evidence/artifact_manifest.json').read_text())))''')
-md('''## 9. References, AI use and traceability
+md('''## 8. References, AI use and traceability
 - Chen, D. (2015). *Online Retail*. UCI Machine Learning Repository. DOI: https://doi.org/10.24432/C5BW33. Dataset and dictionary: https://archive.ics.uci.edu/dataset/352/online-retail. Source licence: CC BY 4.0. The original retrieval/check is recorded in the preserved manifest; no new download is claimed.
 - Fontecilla, T. (2026). *Workshop 2: From Exploratory Analysis to Credible Validation*, student brief and rubric supplied in the course workspace.
 - Course notebooks: *Validation, Leakage and Reproducible Pipelines*; *Guided Validation Case*; *Sampling, Regression and Classification*. Consulted locally for sampling/split distinctions and train-only transformations. Teacher materials are not redistributed in this repository.
@@ -137,6 +146,10 @@ md('''## 9. References, AI use and traceability
 
 The source extract is unchanged. `evidence/protocol.json` records analytical assumptions; `data/processed/` contains checkable tables, actual samples and prepared lines; `data/splits/` contains actual partition files. The README provides reproduction instructions and the final submission identifies the Git commit and tag. The supplemental LaTeX report uses these same generated outputs.''')
 
+# The primary deliverable closes with the required management summary.
+reference_cell=cells.pop()
+summary_index=next(i for i,c in enumerate(cells) if c.cell_type=='markdown' and c.source.startswith('## 9. Management'))
+cells.insert(summary_index,reference_cell)
 nb=nbf.v4.new_notebook(cells=cells,metadata={'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},
                                          'language_info':{'name':'python','version':'3.12'}})
 path=ROOT/'notebooks/W2_project.ipynb'

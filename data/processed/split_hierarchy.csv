@@ -1,0 +1,5 @@
+stage,subset,rows,parent_rows,role,parent_fraction_pct
+1: reserve test,development,370931,516384,Earlier pool available for training/validation; not the scaler fit set,71.8323960463531
+1: reserve test,test,145453,516384,Later assessment period; excluded from development,28.1676039536469
+2: carve validation from development,train,285421,370931,Fit preprocessing only here,76.94719503088176
+2: carve validation from development,validation,85510,370931,Check the fixed procedure before test transformation,23.052804969118245
