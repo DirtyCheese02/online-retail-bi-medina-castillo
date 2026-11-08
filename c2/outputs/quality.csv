@@ -1,0 +1,12 @@
+check,affected,status,treatment
+Missing/outside-window timestamps,0,PASS,Stop on invalid partition date
+Missing invoice/item keys,0,PASS,Stop; grouping requires keys
+Missing customer IDs,127216,FLAG,Keep eligible value; exclude both customer grouping methods
+Nonpositive prices,2463,FLAG,Keep source; exclude purchase measure; no imputation
+Negative quantity without C,1306,FLAG,Keep outside purchase and eligible cancellation measures
+Outside provisional item pattern,5072,FLAG,Keep source; exclude scoped measure; pattern is not verified category
+Missing descriptions,1439,FLAG,Do not remove solely for description; use StockCode
+Exact repeats beyond first copy,4989,FLAG,Retain W2 baseline; no unique line ID proves error
+Invoices crossing partitions,0,PASS,Stop to avoid sibling-line leakage
+Known IDs shared within one eligible invoice,0,PASS,Stop before customer aggregate
+Source-row loss or repeated source position,0,PASS,Conserve every original row

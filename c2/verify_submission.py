@@ -1,0 +1,79 @@
+"""Audit C2 delivery and cross-artifact numerical evidence without awarding a grade."""
+from pathlib import Path
+from zipfile import ZipFile
+import json,hashlib,math,re
+import unicodedata
+import xml.etree.ElementTree as E
+import numpy as np
+import pandas as pd
+import nbformat
+from pypdf import PdfReader
+
+HERE=Path(__file__).resolve().parent
+OUT=HERE/'outputs';DELIVERY=HERE/'delivery'
+R=json.loads((OUT/'C2_results.json').read_text(encoding='utf-8'))
+checks=[]
+def check(label,condition):
+    assert condition,label
+    checks.append({'check':label,'result':'PASS'})
+nb=nbformat.read(DELIVERY/'01_C2_Customer_Profiles.ipynb',4)
+codes=[c for c in nb.cells if c.cell_type=='code']
+code='\n'.join(c.source for c in codes);text='\n'.join(c.source for c in nb.cells if c.cell_type=='markdown')
+check('All notebook code cells executed sequentially',[c.execution_count for c in codes]==list(range(1,len(codes)+1)))
+check('No notebook execution error',not any(o.output_type=='error' for c in codes for o in c.outputs))
+check('Code and outputs include all project logic inline',all(f'def {n}(' in code for n in ['load_source','check_preparation','monthly_records','fit_first_model','assess','validation_gate','concentration_followup']) and not re.search(r'from (c2_analysis|w2_analysis|feedback_delivery) import',code))
+check('At least three saved plot outputs',sum('image/png' in o.get('data',{}) for c in codes for o in c.outputs)>=3)
+check('Group, source, contribution and AI notes present',all(x in text for x in ['Moisés Medina','Ignacia Castillo','UCI Online Retail','Assigned defense preparation','AI assistance']))
+check('Descriptive clustering route and no accuracy claim','Route: descriptive clustering' in text and 'not accuracy' in text)
+check('Unchanged W2 baseline reproduced',R['annual_W2_reproduction']['known_ids']==4293 and np.isclose(R['annual_W2_reproduction']['K10_pct'],60.50013933127034))
+check('W2 source split counts retained',[x['source_rows'] for x in R['source_partitions']]==[285421,85510,145453])
+check('Active ID-month partition counts explicit',[x['active_ID_months'] for x in R['model_partitions']]==[7195,2192,3021])
+check('One frozen training-only model',R['frozen_model']['fit_records']==7195 and R['frozen_model']['k']==3 and R['frozen_model']['seed']==4232026 and not R['frozen_model']['test_used_for_model_choice'])
+check('Validation gate completed before test',all(x['passed'] for x in R['validation_gate']) and code.index('gate=validation_gate(')<code.index("test,test_profiles,test_metrics,test_cross=assess("))
+check('ID-month keys do not overlap',all(x['shared_ID_months']==0 for x in R['customer_overlap']))
+m=pd.DataFrame(R['metrics'])
+check('Both methods compare on identical held record counts',m.groupby('partition').records.nunique().eq(1).all() and m.groupby('partition').method.nunique().eq(2).all())
+check('All three profiles populated and record counts conserved',all(m.populated_groups.eq(3)) and sum(x['records'] for x in R['test_profiles'] if x['method']=='KMeans')==3021)
+cross=pd.DataFrame(R['test_cross'])
+check('Reference cross-table conserves all 3021 records',int(cross.iloc[:,1:].to_numpy().sum())==3021)
+bridge=pd.DataFrame(R['value_bridge'])
+check('Unidentified category conserves all eligible value',np.allclose(bridge.iloc[:,1:].sum(axis=1),100) and np.isclose(bridge.iloc[1]['Unidentified purchases'],21.44882712054614))
+check('W2 fixed earlier group followed in later months',all(x['frozen_review_ids']==362 for x in R['stability']) and [x['frozen_ids_active'] for x in R['stability']]==[218,265])
+reader=PdfReader(DELIVERY/'GROUP_Medina_Castillo_C2_Brief.pdf');pdftext='\n'.join(p.extract_text() or '' for p in reader.pages)
+check('PDF brief at most three pages including references',len(reader.pages)<=3 and 'References and submitted evidence' in pdftext)
+check('Brief contains actual held comparison metrics',all(f'{v:.3f}' in pdftext for v in m.silhouette))
+check('Brief includes group sizes and missing-ID limit',all(str(v) in pdftext.replace(',','') for v in [3021,2405,864,1352,805]) and '21.45%' in pdftext)
+plain_pdf=re.sub(r'\s+',' ',unicodedata.normalize('NFKC',pdftext))
+check('Brief clearly distinguishes grouping from prediction','This is grouping, not a forecast' in plain_pdf and 'not classification accuracy' in plain_pdf)
+ns={'p':'http://schemas.openxmlformats.org/presentationml/2006/main','a':'http://schemas.openxmlformats.org/drawingml/2006/main','c':'http://schemas.openxmlformats.org/drawingml/2006/chart'}
+with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2_Presentation.pptx') as z:
+    slidefiles=[p for p in z.namelist() if re.fullmatch(r'ppt/slides/slide\d+\.xml',p)]
+    notes=[p for p in z.namelist() if re.fullmatch(r'ppt/notesSlides/notesSlide\d+\.xml',p)]
+    check('Presentation has 12 slides and 12 speaking-note parts',len(slidefiles)==12 and len(notes)==12)
+    slides={int(re.search(r'slide(\d+)',p).group(1)):E.fromstring(z.read(p)) for p in slidefiles}
+    for n in [3,4,6,7,8]:check(f'Slide {n} has an editable table',slides[n].find('.//a:tbl',ns) is not None)
+    charts=[p for p in z.namelist() if re.search(r'/charts/chart\d+\.xml$',p)]
+    check('Charts are native with two embedded data workbooks',len(charts)==2 and len([p for p in z.namelist() if p.endswith('.xlsx') and 'embeddings/' in p])==2)
+    expected=[[[x['frozen_group_known_value_pct']/100 for x in R['stability']],[x['reranked_K10_pct']/100 for x in R['stability']]],
+              [[x[col]/100 for x in reversed(R['value_bridge'])] for col in ['Known top-decile purchases','Other identified purchases','Unidentified purchases']]]
+    for i,p in enumerate(sorted(charts)):
+        chart=E.fromstring(z.read(p))
+        series=chart.findall('.//c:ser',ns)
+        values=[[float(v.text) for v in s.findall('.//c:val//c:numCache/c:pt/c:v',ns)] for s in series]
+        check(f'Native chart {i+1} agrees with notebook values',np.allclose(values,expected[i],atol=1e-9,rtol=0))
+    slide7=' '.join(t.text or '' for t in slides[7].findall('.//a:t',ns))
+    check('Presentation profile table agrees with notebook',all(f'{v:,}' in slide7 for v in [864,1352,805]))
+    slide8=' '.join(t.text or '' for t in slides[8].findall('.//a:t',ns))
+    check('Presentation metrics agree with notebook','0.464' in slide8 and '0.289' in slide8 and '380' in slide8)
+with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2.zip') as z:
+    expectednames={'01_C2_Customer_Profiles.ipynb','GROUP_Medina_Castillo_C2_Brief.pdf','GROUP_Medina_Castillo_C2_Presentation.pptx'}
+    check('ZIP contains only the three permitted deliverables',set(z.namelist())==expectednames and z.testzip() is None)
+    check('ZIP bytes match the verified individual files',all(z.read(n)==(DELIVERY/n).read_bytes() for n in expectednames))
+check('Contributions distinguish documented inputs from planned reviews','planned review responsibilities' in text and 'Moisés will check' in text and 'Ignacia will check' in text)
+latex=json.loads((HERE/'qa/latex_export.json').read_text(encoding='utf-8-sig'))
+check('LaTeX export succeeded without overflowing content',latex['exitCode']==0 and 'Overfull' not in latex['log'])
+record={'status':'PASS','checks':checks,'check_count':len(checks),'notebook_code_cells':len(codes),'brief_pages':len(reader.pages),
+        'route':'clustering','grade_awarded':None,'Canvas_receipt':'Not verified; user upload required',
+        'individual_defense':'Prepared questions/notes, not a verified oral performance'}
+(OUT/'C2_verification.json').write_text(json.dumps(record,indent=2)+'\n')
+print(json.dumps({k:v for k,v in record.items() if k!='checks'},indent=2))

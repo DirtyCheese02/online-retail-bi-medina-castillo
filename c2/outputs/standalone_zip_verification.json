@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "notebook_executed_from_extracted_zip": true,
+  "local_project_sidecar_code_used": false,
+  "source_loaded": "Pinned public W2 extract; SHA-256 verified",
+  "all_model_and_business_results_equal": true,
+  "code_cells_executed": 9,
+  "final_notebook_code_matches_tested_extraction": true,
+  "tested_code_sha256": "8fd7d7cd466d59adce060443197391042ac8580b1ace5dc53284bd933fb9d392",
+  "prose_clarification_after_execution": "Group-median explanation and contribution wording clarified; executable cells and saved results unchanged."
+}

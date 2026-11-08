@@ -1,0 +1,4 @@
+left,right,shared_customer_ids,shared_id_month_keys
+train,validation,1301,0
+train,test,1532,0
+validation,test,1096,0

@@ -1,0 +1,319 @@
+{
+  "annual_W2_reproduction": {
+    "known_ids": 4293,
+    "K10_pct": 60.50013933127034,
+    "ID_coverage_pct": 85.66276814655409
+  },
+  "frozen_model": {
+    "feature_names": [
+      "invoices",
+      "mean_invoice_value_gbp"
+    ],
+    "k": 3,
+    "n_init": 20,
+    "max_iter": 300,
+    "seed": 4232026,
+    "fit_records": 7195,
+    "fit_months": [
+      "2010-12",
+      "2011-01",
+      "2011-02",
+      "2011-03",
+      "2011-04",
+      "2011-05",
+      "2011-06",
+      "2011-07"
+    ],
+    "scaler_mean": [
+      0.8228603786613328,
+      5.644551100557384
+    ],
+    "scaler_scale": [
+      0.2785917233206256,
+      0.822984248026426
+    ],
+    "cluster_centers": [
+      [
+        -0.40594728856906953,
+        -0.9502130777709666
+      ],
+      [
+        -0.45300036937885274,
+        0.6117846144974969
+      ],
+      [
+        1.6313601296218565,
+        0.11242942597159715
+      ]
+    ],
+    "cluster_names": {
+      "0": "Profile 1",
+      "1": "Profile 2",
+      "2": "Profile 3"
+    },
+    "reference_p50_gbp": 329.65,
+    "reference_p90_gbp": 1036.7680000000007,
+    "test_used_for_model_choice": false,
+    "prior_full_case_exposure": true
+  },
+  "metrics": [
+    {
+      "partition": "validation",
+      "method": "KMeans",
+      "records": 2192,
+      "silhouette": 0.4717029727399792,
+      "populated_groups": 3
+    },
+    {
+      "partition": "validation",
+      "method": "Value rule",
+      "records": 2192,
+      "silhouette": 0.3004241988168972,
+      "populated_groups": 3
+    },
+    {
+      "partition": "test",
+      "method": "KMeans",
+      "records": 3021,
+      "silhouette": 0.46408311806877295,
+      "populated_groups": 3
+    },
+    {
+      "partition": "test",
+      "method": "Value rule",
+      "records": 3021,
+      "silhouette": 0.2890100709851824,
+      "populated_groups": 3
+    }
+  ],
+  "source_partitions": [
+    {
+      "split": "train",
+      "source_rows": 285421,
+      "invoices": 14722,
+      "known_ids_raw": 3193
+    },
+    {
+      "split": "validation",
+      "source_rows": 85510,
+      "invoices": 4064,
+      "known_ids_raw": 1817
+    },
+    {
+      "split": "test",
+      "source_rows": 145453,
+      "invoices": 6099,
+      "known_ids_raw": 2446
+    }
+  ],
+  "model_partitions": [
+    {
+      "split": "train",
+      "active_ID_months": 7195,
+      "unique_active_IDs": 3145,
+      "months": 8
+    },
+    {
+      "split": "validation",
+      "active_ID_months": 2192,
+      "unique_active_IDs": 1769,
+      "months": 2
+    },
+    {
+      "split": "test",
+      "active_ID_months": 3021,
+      "unique_active_IDs": 2405,
+      "months": 2
+    }
+  ],
+  "test_profiles": [
+    {
+      "partition": "test",
+      "method": "KMeans",
+      "group": "Profile 1",
+      "records": 864,
+      "unique_ids": 797,
+      "median_invoices": 1.0,
+      "median_invoice_value_gbp": 152.48000000000002,
+      "median_monthly_value_gbp": 155.305,
+      "eligible_value_gbp": 132287.18,
+      "record_share_pct": 28.599801390268123,
+      "known_value_share_pct": 6.170183501363059
+    },
+    {
+      "partition": "test",
+      "method": "KMeans",
+      "group": "Profile 2",
+      "records": 1352,
+      "unique_ids": 1234,
+      "median_invoices": 1.0,
+      "median_invoice_value_gbp": 416.19000000000005,
+      "median_monthly_value_gbp": 416.19000000000005,
+      "eligible_value_gbp": 832413.83,
+      "record_share_pct": 44.7533929162529,
+      "known_value_share_pct": 38.82572808772879
+    },
+    {
+      "partition": "test",
+      "method": "KMeans",
+      "group": "Profile 3",
+      "records": 805,
+      "unique_ids": 674,
+      "median_invoices": 2.0,
+      "median_invoice_value_gbp": 313.225,
+      "median_monthly_value_gbp": 733.09,
+      "eligible_value_gbp": 1179273.8,
+      "record_share_pct": 26.64680569347898,
+      "known_value_share_pct": 55.004088410908146
+    },
+    {
+      "partition": "test",
+      "method": "Value rule",
+      "group": "Higher value",
+      "records": 380,
+      "unique_ids": 316,
+      "median_invoices": 2.0,
+      "median_invoice_value_gbp": 817.78,
+      "median_monthly_value_gbp": 1526.365,
+      "eligible_value_gbp": 1140047.25,
+      "record_share_pct": 12.578616352201259,
+      "known_value_share_pct": 53.17447036609539
+    },
+    {
+      "partition": "test",
+      "method": "Value rule",
+      "group": "Lower value",
+      "records": 1357,
+      "unique_ids": 1217,
+      "median_invoices": 1.0,
+      "median_invoice_value_gbp": 183.6,
+      "median_monthly_value_gbp": 203.72,
+      "eligible_value_gbp": 275421.74,
+      "record_share_pct": 44.91890102615028,
+      "known_value_share_pct": 12.846314178476751
+    },
+    {
+      "partition": "test",
+      "method": "Value rule",
+      "group": "Middle value",
+      "records": 1284,
+      "unique_ids": 1130,
+      "median_invoices": 1.0,
+      "median_invoice_value_gbp": 409.26,
+      "median_monthly_value_gbp": 517.05,
+      "eligible_value_gbp": 728505.82,
+      "record_share_pct": 42.50248262164846,
+      "known_value_share_pct": 33.979215455427855
+    }
+  ],
+  "test_cross": [
+    {
+      "cluster": "Profile 1",
+      "Lower value": 864,
+      "Middle value": 0,
+      "Higher value": 0
+    },
+    {
+      "cluster": "Profile 2",
+      "Lower value": 405,
+      "Middle value": 823,
+      "Higher value": 124
+    },
+    {
+      "cluster": "Profile 3",
+      "Lower value": 88,
+      "Middle value": 461,
+      "Higher value": 256
+    }
+  ],
+  "stability": [
+    {
+      "month": "2011-10",
+      "active_known_ids": 1361,
+      "reference_ids": 3613,
+      "frozen_review_ids": 362,
+      "frozen_ids_active": 218,
+      "reranked_K10_pct": 50.773290061949744,
+      "frozen_group_known_value_pct": 48.16101323424655,
+      "frozen_group_all_value_pct": 43.857017219452175,
+      "ID_coverage_pct": 91.06331921660262
+    },
+    {
+      "month": "2011-11",
+      "active_known_ids": 1660,
+      "reference_ids": 3613,
+      "frozen_review_ids": 362,
+      "frozen_ids_active": 265,
+      "reranked_K10_pct": 47.79412505662182,
+      "frozen_group_known_value_pct": 46.12513545029083,
+      "frozen_group_all_value_pct": 36.231834888440204,
+      "ID_coverage_pct": 78.55117287945386
+    }
+  ],
+  "value_bridge": [
+    {
+      "month": "2011-10",
+      "Known top-decile purchases": 46.23584320588487,
+      "Other identified purchases": 44.82747601071775,
+      "Unidentified purchases": 8.936680783397376
+    },
+    {
+      "month": "2011-11",
+      "Known top-decile purchases": 37.54284579944938,
+      "Other identified purchases": 41.00832708000448,
+      "Unidentified purchases": 21.44882712054614
+    }
+  ],
+  "validation_gate": [
+    {
+      "validation_check": "finite_positive_features",
+      "passed": true
+    },
+    {
+      "validation_check": "exactly_three_profiles_assigned",
+      "passed": true
+    },
+    {
+      "validation_check": "all_records_have_both_groups",
+      "passed": true
+    },
+    {
+      "validation_check": "no_test_months_in_fit",
+      "passed": true
+    },
+    {
+      "validation_check": "validation_months_only",
+      "passed": true
+    },
+    {
+      "validation_check": "learned_parameters_unchanged",
+      "passed": true
+    }
+  ],
+  "source": {
+    "origin": "Preserved local W2 extract",
+    "input_sha256": "8f6d42748e36cf41008f411307fe77e03b2001d25eb445dcfab5aa70186fdb4f",
+    "source_rows": 516384,
+    "source_columns": 8
+  },
+  "customer_overlap": [
+    {
+      "left": "train",
+      "right": "validation",
+      "shared_ID_months": 0,
+      "shared_CustomerIDs": 1301
+    },
+    {
+      "left": "train",
+      "right": "test",
+      "shared_ID_months": 0,
+      "shared_CustomerIDs": 1532
+    },
+    {
+      "left": "validation",
+      "right": "test",
+      "shared_ID_months": 0,
+      "shared_CustomerIDs": 1096
+    }
+  ]
+}

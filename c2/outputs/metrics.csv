@@ -1,0 +1,5 @@
+partition,method,records,silhouette,populated_groups
+validation,KMeans,2192,0.4717029727399792,3
+validation,Value rule,2192,0.3004241988168972,3
+test,KMeans,3021,0.46408311806877295,3
+test,Value rule,3021,0.2890100709851824,3

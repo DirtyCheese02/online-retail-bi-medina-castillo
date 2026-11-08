@@ -1,5 +1,11 @@
 # Online Retail BI — Medina and Castillo
 
+## Latest assessment: C2
+
+The [C2 project](c2/README.md) follows the updated IIB423T-1 brief: one ZIP with executed notebook, a brief of at most three pages and the presentation. **Submit [GROUP_Medina_Castillo_C2.zip](c2/delivery/GROUP_Medina_Castillo_C2.zip)**. It contains no datasets or environment folders. C2 uses one clustering model and a simple value-group reference, preserves W2 preparation/time windows, and responds to the actual W2 feedback. The notebook contains all analysis functions inline and saved outputs.
+
+Deadline in the updated brief: **8 November 2026 end of day, Santiago**. Defense: **10 November 2026**. The historical W2 instructions below apply to W2, not the C2 ZIP.
+
 **Business Intelligence IIB423T-1 · Workshop 2 · Original analysis 20 October; corrective release 8 November 2026**  
 **Authors:** Moisés Medina and Ignacia Castillo  
 **Specific W2 deadline:** 29 October 2026, 23:59, Chile  

@@ -1,0 +1,4 @@
+split,active_ID_months,unique_active_IDs,months
+train,7195,3145,8
+validation,2192,1769,2
+test,3021,2405,2

@@ -9,3 +9,6 @@ qa/
 *.out
 *.synctex.gz
 .env
+c2/qa/
+c2/initial_results.txt
+c2/.chart-data-*/

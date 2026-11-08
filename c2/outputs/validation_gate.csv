@@ -1,0 +1,7 @@
+validation_check,passed
+finite_positive_features,True
+exactly_three_profiles_assigned,True
+all_records_have_both_groups,True
+no_test_months_in_fit,True
+validation_months_only,True
+learned_parameters_unchanged,True
