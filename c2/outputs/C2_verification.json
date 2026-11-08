@@ -86,31 +86,43 @@
       "result": "PASS"
     },
     {
-      "check": "Presentation has 12 slides and 12 speaking-note parts",
+      "check": "Presentation has 13 slides and 13 speaking-note parts",
       "result": "PASS"
     },
     {
-      "check": "Slide 3 has an editable table",
+      "check": "Backup slide has an editable exact cross-table",
       "result": "PASS"
     },
     {
-      "check": "Slide 4 has an editable table",
+      "check": "Ten native charts have ten embedded data workbooks",
       "result": "PASS"
     },
     {
-      "check": "Slide 6 has an editable table",
+      "check": "Slide 4 has the expected editable charts",
       "result": "PASS"
     },
     {
-      "check": "Slide 7 has an editable table",
+      "check": "Slide 6 has the expected editable charts",
       "result": "PASS"
     },
     {
-      "check": "Slide 8 has an editable table",
+      "check": "Slide 7 has the expected editable charts",
       "result": "PASS"
     },
     {
-      "check": "Charts are native with two embedded data workbooks",
+      "check": "Slide 8 has the expected editable charts",
+      "result": "PASS"
+    },
+    {
+      "check": "Slide 9 has the expected editable charts",
+      "result": "PASS"
+    },
+    {
+      "check": "Slide 10 has the expected editable charts",
+      "result": "PASS"
+    },
+    {
+      "check": "Slide 11 has the expected editable charts",
       "result": "PASS"
     },
     {
@@ -122,11 +134,67 @@
       "result": "PASS"
     },
     {
-      "check": "Presentation profile table agrees with notebook",
+      "check": "Native scatter 3 preserves a complete frozen group",
       "result": "PASS"
     },
     {
-      "check": "Presentation metrics agree with notebook",
+      "check": "Native scatter 3 preserves a complete frozen group",
+      "result": "PASS"
+    },
+    {
+      "check": "Native scatter 3 preserves a complete frozen group",
+      "result": "PASS"
+    },
+    {
+      "check": "Native scatter 3 includes all 3021 held records",
+      "result": "PASS"
+    },
+    {
+      "check": "Native scatter 4 preserves a complete frozen group",
+      "result": "PASS"
+    },
+    {
+      "check": "Native scatter 4 preserves a complete frozen group",
+      "result": "PASS"
+    },
+    {
+      "check": "Native scatter 4 preserves a complete frozen group",
+      "result": "PASS"
+    },
+    {
+      "check": "Native scatter 4 includes all 3021 held records",
+      "result": "PASS"
+    },
+    {
+      "check": "Native chart 5 agrees with notebook values",
+      "result": "PASS"
+    },
+    {
+      "check": "Native chart 6 agrees with notebook values",
+      "result": "PASS"
+    },
+    {
+      "check": "Native chart 7 agrees with notebook values",
+      "result": "PASS"
+    },
+    {
+      "check": "Native chart 8 agrees with notebook values",
+      "result": "PASS"
+    },
+    {
+      "check": "Native chart 9 agrees with notebook values",
+      "result": "PASS"
+    },
+    {
+      "check": "Native chart 10 agrees with notebook values",
+      "result": "PASS"
+    },
+    {
+      "check": "Presentation backup preserves all exact reference counts",
+      "result": "PASS"
+    },
+    {
+      "check": "Presentation test metrics agree with notebook",
       "result": "PASS"
     },
     {
@@ -146,7 +214,7 @@
       "result": "PASS"
     }
   ],
-  "check_count": 36,
+  "check_count": 53,
   "notebook_code_cells": 9,
   "brief_pages": 3,
   "route": "clustering",

@@ -8,7 +8,7 @@ The updated IIB423T-1 brief supplied by the team sets **8 November 2026 end of d
 
 1. `01_C2_Customer_Profiles.ipynb` — executed, English, all project functions inline, saved tables/figures, contribution/AI notes and defense checkpoints.
 2. `GROUP_Medina_Castillo_C2_Brief.pdf` — three pages including references, generated from notebook results.
-3. `GROUP_Medina_Castillo_C2_Presentation.pptx` — editable presentation, 11 main slides plus a source/defense backup, with speaking notes for approximately 12 minutes including pauses.
+3. `GROUP_Medina_Castillo_C2_Presentation.pptx` — editable presentation, 12 main slides plus a source/defense backup, with speaking notes for approximately 13 minutes including pauses.
 
 No data, environment, source sidecars, README or extra report is inside the ZIP. Saved notebook outputs are readable without running code. Rerunning uses the preserved local W2 input when available, otherwise an exact SHA-256-checked public input at an immutable GitHub commit. That download is documented inside the notebook; all analysis functions are inline.
 
@@ -23,6 +23,14 @@ The model provides more specific purchase-pattern descriptions than a value tier
 `c2_analysis.py` is the maintained source embedded by `build_notebook.py`. Execute `python c2/execute_notebook.py` from the repository to rerun the notebook, then `python c2/build_brief.py` to update LaTeX. The built-in LaTeX editor compiles `report/main.tex`. The presentation builder writes native tables/charts in Artifact Session and exports an editable PPTX. `package_submission.py` creates the exact three-file ZIP; `verify_submission.py` checks structure and agreement across artifacts. Those development files are not Canvas hand-in extras.
 
 `C2_PROTOCOL.md` records fixed choices before the model run. `outputs/C2_results.json` is the shared numerical source for brief and presentation. The notebook includes defense questions for rubric F–H. No automatic check can guarantee the individual oral score or a Canvas upload receipt.
+
+## Presentation revision
+
+The revised deck follows the team's C1 visual reference: Montserrat titles, large figures, navy/paper backgrounds and teal/orange charts. Ten native charts replace most tables: chronological populations, validation silhouette, two complete held-record scatter plots, profile sizes and medians, reference-tier composition, later account contribution and unidentified value. All charts have embedded editable workbooks. The backup retains the exact cross-table.
+
+`presentation/prepare_visual_data.py` reconstructs the held coordinates and assignments from the saved monthly records and frozen model parameters without retraining. `presentation/build_visual_deck.mjs` authors the revised deck through Artifact Session using `visual_data.json`, the two C1 cover assets and `speaker_notes_source.json`. Monetary chart medians display two decimals; scatter coordinates use six decimals and chart percentage fractions use ten solely for Excel portability. Calculations in the notebook remain unchanged.
+
+The notebook and three-page brief are byte-identical to `c2-submission-2026-11-08`. That original tag remains preserved. The revised presentation and three-file ZIP are identified by `c2-presentation-v2-2026-11-08`.
 
 ## Contributions and AI disclosure
 

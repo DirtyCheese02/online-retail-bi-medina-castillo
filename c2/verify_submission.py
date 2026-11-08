@@ -49,22 +49,52 @@ ns={'p':'http://schemas.openxmlformats.org/presentationml/2006/main','a':'http:/
 with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2_Presentation.pptx') as z:
     slidefiles=[p for p in z.namelist() if re.fullmatch(r'ppt/slides/slide\d+\.xml',p)]
     notes=[p for p in z.namelist() if re.fullmatch(r'ppt/notesSlides/notesSlide\d+\.xml',p)]
-    check('Presentation has 12 slides and 12 speaking-note parts',len(slidefiles)==12 and len(notes)==12)
+    check('Presentation has 13 slides and 13 speaking-note parts',len(slidefiles)==13 and len(notes)==13)
     slides={int(re.search(r'slide(\d+)',p).group(1)):E.fromstring(z.read(p)) for p in slidefiles}
-    for n in [3,4,6,7,8]:check(f'Slide {n} has an editable table',slides[n].find('.//a:tbl',ns) is not None)
+    check('Backup slide has an editable exact cross-table',slides[13].find('.//a:tbl',ns) is not None)
     charts=[p for p in z.namelist() if re.search(r'/charts/chart\d+\.xml$',p)]
-    check('Charts are native with two embedded data workbooks',len(charts)==2 and len([p for p in z.namelist() if p.endswith('.xlsx') and 'embeddings/' in p])==2)
-    expected=[[[x['frozen_group_known_value_pct']/100 for x in R['stability']],[x['reranked_K10_pct']/100 for x in R['stability']]],
-              [[x[col]/100 for x in reversed(R['value_bridge'])] for col in ['Known top-decile purchases','Other identified purchases','Unidentified purchases']]]
-    for i,p in enumerate(sorted(charts)):
+    check('Ten native charts have ten embedded data workbooks',len(charts)==10 and len([p for p in z.namelist() if p.endswith('.xlsx') and 'embeddings/' in p])==10)
+    for n,count in {4:1,6:1,7:2,8:3,9:1,10:1,11:1}.items():
+        check(f'Slide {n} has the expected editable charts',len(slides[n].findall('.//c:chart',ns))==count)
+    profiles=[x for x in R['test_profiles'] if x['method']=='KMeans']
+    vc=m.loc[m.partition.eq('validation')].set_index('method')
+    # Recompute coordinates/assignments from saved monthly records and frozen training
+    # parameters independently of the presentation manifest. No model is refitted.
+    held=pd.read_csv(OUT/'monthly_records.csv').query("split == 'test'").copy()
+    frozen=R['frozen_model']
+    xy=(np.log1p(held[frozen['feature_names']].to_numpy())-frozen['scaler_mean'])/frozen['scaler_scale']
+    centers=np.array(frozen['cluster_centers'])
+    nearest=np.argmin(((xy[:,None,:]-centers[None,:,:])**2).sum(axis=2),axis=1)
+    held['cluster']=[frozen['cluster_names'][str(int(i))] for i in nearest]
+    held['reference']=np.select([held.monthly_value_gbp.le(frozen['reference_p50_gbp']),held.monthly_value_gbp.le(frozen['reference_p90_gbp'])],['Lower value','Middle value'],default='Higher value')
+    expected_scatter={}
+    for index,column,groups in [(2,'reference',['Lower value','Middle value','Higher value']),(3,'cluster',['Profile 1','Profile 2','Profile 3'])]:
+        expected_scatter[index]=[(xy[held[column].eq(g),0],xy[held[column].eq(g),1]) for g in groups]
+    counts=cross.iloc[:,1:].to_numpy()
+    expected={0:[[3021,2192,7195]],1:[[vc.loc['KMeans','silhouette'],vc.loc['Value rule','silhouette']]],
+              4:[[x['records'] for x in profiles]],5:[[x['median_invoices'] for x in profiles]],
+              6:[[x['median_invoice_value_gbp'] for x in profiles]],7:(counts/counts.sum(axis=0)).tolist(),
+              8:[[x['frozen_group_known_value_pct']/100 for x in R['stability']],[x['reranked_K10_pct']/100 for x in R['stability']]],
+              9:[[x[col]/100 for x in reversed(R['value_bridge'])] for col in ['Known top-decile purchases','Other identified purchases','Unidentified purchases']]}
+    for i,p in enumerate(sorted(charts,key=lambda p:int(re.search(r'chart(\d+)\.xml',p).group(1)))):
         chart=E.fromstring(z.read(p))
         series=chart.findall('.//c:ser',ns)
-        values=[[float(v.text) for v in s.findall('.//c:val//c:numCache/c:pt/c:v',ns)] for s in series]
-        check(f'Native chart {i+1} agrees with notebook values',np.allclose(values,expected[i],atol=1e-9,rtol=0))
-    slide7=' '.join(t.text or '' for t in slides[7].findall('.//a:t',ns))
-    check('Presentation profile table agrees with notebook',all(f'{v:,}' in slide7 for v in [864,1352,805]))
-    slide8=' '.join(t.text or '' for t in slides[8].findall('.//a:t',ns))
-    check('Presentation metrics agree with notebook','0.464' in slide8 and '0.289' in slide8 and '380' in slide8)
+        if i in expected_scatter:
+            point_count=0
+            for s,(xs,ys) in zip(series,expected_scatter[i],strict=True):
+                actualx=[float(v.text) for v in s.findall('.//c:xVal//c:numCache/c:pt/c:v',ns)]
+                actualy=[float(v.text) for v in s.findall('.//c:yVal//c:numCache/c:pt/c:v',ns)]
+                check(f'Native scatter {i+1} preserves a complete frozen group',np.allclose(actualx,xs,atol=5.01e-7,rtol=0) and np.allclose(actualy,ys,atol=5.01e-7,rtol=0))
+                point_count+=len(actualx)
+            check(f'Native scatter {i+1} includes all 3021 held records',point_count==3021)
+        else:
+            values=[[float(v.text) for v in s.findall('.//c:val//c:numCache/c:pt/c:v',ns)] for s in series]
+            check(f'Native chart {i+1} agrees with notebook values',np.allclose(values,expected[i],atol=.00501 if i==6 else 1e-9,rtol=0))
+    table=slides[13].find('.//a:tbl',ns)
+    actualcounts=[[int(''.join(t.text or '' for t in cell.findall('.//a:t',ns)).replace(',','')) for cell in row.findall('a:tc',ns)[1:]] for row in table.findall('a:tr',ns)[1:]]
+    check('Presentation backup preserves all exact reference counts',np.array_equal(actualcounts,counts) and sum(map(sum,actualcounts))==3021)
+    slide9=' '.join(t.text or '' for t in slides[9].findall('.//a:t',ns))
+    check('Presentation test metrics agree with notebook','0.464' in slide9 and '0.289' in slide9 and '380' in slide9)
 with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2.zip') as z:
     expectednames={'01_C2_Customer_Profiles.ipynb','GROUP_Medina_Castillo_C2_Brief.pdf','GROUP_Medina_Castillo_C2_Presentation.pptx'}
     check('ZIP contains only the three permitted deliverables',set(z.namelist())==expectednames and z.testzip() is None)
