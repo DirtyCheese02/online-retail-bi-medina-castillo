@@ -18,7 +18,7 @@ with ZipFile(path) as z:
     assert z.testzip() is None
 manifest={name:hashlib.sha256((delivery/name).read_bytes()).hexdigest() for name in names}
 manifest['GROUP_Medina_Castillo_C2.zip']=hashlib.sha256(path.read_bytes()).hexdigest()
-(HERE/'outputs/submission_checksums.json').write_text(json.dumps(manifest,indent=2)+'\n')
+(HERE/'outputs/submission_checksums.json').write_text(json.dumps(manifest,indent=2)+'\n',newline='\n')
 print(path)
 print('ZIP entries:',names)
 print('ZIP bytes:',path.stat().st_size)

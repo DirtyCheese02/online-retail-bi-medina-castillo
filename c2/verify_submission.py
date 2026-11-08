@@ -105,5 +105,5 @@ check('LaTeX export succeeded without overflowing content',latex['exitCode']==0 
 record={'status':'PASS','checks':checks,'check_count':len(checks),'notebook_code_cells':len(codes),'brief_pages':len(reader.pages),
         'route':'clustering','grade_awarded':None,'Canvas_receipt':'Not verified; user upload required',
         'individual_defense':'Prepared questions/notes, not a verified oral performance'}
-(OUT/'C2_verification.json').write_text(json.dumps(record,indent=2)+'\n')
+(OUT/'C2_verification.json').write_text(json.dumps(record,indent=2)+'\n',newline='\n')
 print(json.dumps({k:v for k,v in record.items() if k!='checks'},indent=2))
