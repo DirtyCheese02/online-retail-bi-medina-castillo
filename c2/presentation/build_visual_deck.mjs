@@ -181,15 +181,15 @@ export async function buildVisualDeck(presentation,D,cover,fade,oldNotes=[]) {
   text(s,'Review identifiable accounts and investigate ID capture together.',70,621,1140,51,29,C.teal,true);
   notes(s,9,'The unknown bucket may include many people. It is not one artificial customer or cluster. Both displayed months sum to 100% before rounding. The unidentified share is 8.9367% in October and 21.4488% in November. Customer-specific profile claims cannot extend to that whole bucket without verified linkage.');
 
-  s=base('What the model supports',true);
-  text(s,'EVIDENCE',70,174,490,30,16,C.mint,true,'Consolas');
-  text(s,'Frequency and invoice size\ndescribe different\npurchase patterns.',70,234,510,210,38,C.white,true,'Montserrat');
-  text(s,'The simple value rule remains useful\nwhen contribution alone is the question.',70,477,510,105,27,C.mint);
-  text(s,'PROPOSED REVIEW',722,174,490,30,16,C.orange,true,'Consolas');
-  text(s,'Review accounts with\nprofiles and value\ncoverage together.',722,234,500,210,36,C.white,true,'Montserrat');
+  s=base('Model verdict and next step',true);
+  text(s,'DESCRIPTIVE RESULT',70,174,490,30,16,C.mint,true,'Consolas');
+  text(s,'Keep the model for\ndescribing purchase\npatterns.',70,234,510,210,38,C.white,true,'Montserrat');
+  text(s,'Silhouette: 0.472 validation, 0.464 test.\nValue rule: 0.289 on the same test.\nValue tiers still suit contribution alone.',70,477,510,110,25,C.mint);
+  text(s,'BUSINESS VALIDATION',722,174,490,30,16,C.orange,true,'Consolas');
+  text(s,'Commercial usefulness\nstill needs\nvalidation.',722,234,500,210,36,C.white,true,'Montserrat');
   text(s,'Next: recent linked transactions\nand a stakeholder review of usefulness.',722,477,500,105,27,C.mint);
   text(s,'Historical, purchase-active identified records. Profit, loyalty and campaign effects remain unmeasured.',70,627,1140,48,22,C.white);
-  notes(s,10,'The supported conclusion is descriptive. All periods were exposed in earlier EDA; recurring IDs are not independent new-customer samples. KMeans imposes three groups and depends on variables/scaling. Recent linked data and stakeholder review are the proposed improvement, not claims that an action will work.');
+  notes(s,10,'Model verdict: retain the first model as a descriptive aid for analyst review. All 2,192 validation and 3,021 test records have assignments and all three groups remain populated. Validation silhouette is 0.472 and test is 0.464, compared with reference 0.300 and 0.289. Similar observed scores do not establish statistical stability or a universal pass threshold. Profiles show different frequency/invoice-size patterns, but business usefulness and action effects remain unvalidated. All periods were exposed in earlier EDA and recurring IDs are not independent new-customer samples. Recent linked data and stakeholder review are the proposed improvement.');
 
   s=base('Reference comparison and sources');
   const vals=[['Same 3,021 test records','Lower value','Middle value','Higher value'],...R.test_cross.map(x=>[x.cluster,num(x['Lower value']),num(x['Middle value']),num(x['Higher value'])])];

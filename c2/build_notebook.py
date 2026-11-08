@@ -161,6 +161,10 @@ for path in figure_paths:
     display(Image(filename=str(path)))''')
 md('''## 8. Conclusions, limits and next improvement
 
+**Model verdict: retain this first model for descriptive profiling.** All 2,192 validation and 3,021 test records receive assignments from the unchanged training transform and centers, with three populated groups in both periods. Silhouette is 0.472 in validation and 0.464 in test, compared with 0.300 and 0.289 for the value rule. The small observed difference between validation and test supports a similar level of internal separation in these later records. It is not a statistical stability test, a universal acceptance threshold or an independent prospective validation.
+
+**What remains unvalidated.** The model distinguishes the selected purchase patterns. We have not established whether commercial users find those profiles useful, whether the same structure persists in recent data, or whether acting on them improves outcomes. We retain it as a descriptive aid for analyst review, rather than approve automated customer actions. If the decision only concerns contribution, the simpler value grouping remains sufficient.
+
 **What the model adds.** It decomposes purchase activity into frequency and invoice size, enabling a more specific account review than a total-value tier alone. In the held records, the more frequent profile contributes a large fraction of identified value. This supports examining its invoices and account characteristics; it does not identify profitable or loyal accounts or prove that a campaign will work.
 
 **What the later-period diagnostic adds.** The earlier fixed review group continues to contribute substantial identified value, while its active membership and contribution vary. Coverage worsens in November. The separate unidentified bucket prevents treating the known-ID ranking as the whole business.
@@ -204,6 +208,7 @@ These prompts support preparation; each student should answer independently in t
 6. **What does silhouette 0.464 mean?** It is the average of (b − a) / max(a, b), where a is a record's mean distance to its own group and b is its nearest other group's mean distance. It describes internal separation in these features. It is not 46.4% accuracy, a probability, external label validation or proof of better actions.
 7. **What did the model add?** The 380 higher-value test ID-months split between 124 in Profile 2 and 256 in Profile 3. A similar value tier can contain different frequency/invoice-size patterns. Profile 3 contributes 55.0% of identified test value, with a different denominator from all eligible value.
 8. **What remains uncertain?** Missing IDs exclude some value from profiling, recurrent IDs create dependence, KMeans/feature choices impose structure, and the period is historical with prior full-case exposure. An absent purchase is not proven churn. Reviewing accounts and ID capture is supported; profit, loyalty or campaign effects are not established. Recent linked transactions and stakeholder review are the next improvement.
+9. **Does the model work?** For the descriptive task, we retain it: all held records receive one of three interpretable profiles, and test silhouette 0.464 is close to validation 0.472 and above the value rule's 0.289 on those same test records. Commercial usefulness, permanent customer types and action effects remain unvalidated. No arbitrary silhouette cutoff or predictive accuracy is claimed.
 ''')
 
 nb=nbf.v4.new_notebook(cells=cells,metadata={'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},'language_info':{'name':'python','version':'3.12.5'}})

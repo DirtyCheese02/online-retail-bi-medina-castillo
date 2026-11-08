@@ -45,6 +45,7 @@ check('Brief contains actual held comparison metrics',all(f'{v:.3f}' in pdftext 
 check('Brief includes group sizes and missing-ID limit',all(str(v) in pdftext.replace(',','') for v in [3021,2405,864,1352,805]) and '21.45%' in pdftext)
 plain_pdf=re.sub(r'\s+',' ',unicodedata.normalize('NFKC',pdftext))
 check('Brief clearly distinguishes grouping from prediction','This is grouping, not a forecast' in plain_pdf and 'not classification accuracy' in plain_pdf)
+check('Notebook and brief state a scoped model verdict','Model verdict: retain this first model for descriptive profiling' in text and 'Model verdict.' in plain_pdf and 'commercial usefulness remains unvalidated' in plain_pdf)
 ns={'p':'http://schemas.openxmlformats.org/presentationml/2006/main','a':'http://schemas.openxmlformats.org/drawingml/2006/main','c':'http://schemas.openxmlformats.org/drawingml/2006/chart'}
 with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2_Presentation.pptx') as z:
     slidefiles=[p for p in z.namelist() if re.fullmatch(r'ppt/slides/slide\d+\.xml',p)]
@@ -97,6 +98,8 @@ with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2_Presentation.pptx') as z:
     check('Presentation backup preserves all exact reference counts',np.array_equal(actualcounts,counts) and sum(map(sum,actualcounts))==3021)
     slide9=' '.join(t.text or '' for t in slides[10].findall('.//a:t',ns))
     check('Presentation test metrics agree with notebook','0.464' in slide9 and '0.289' in slide9 and '380' in slide9)
+    verdict=re.sub(r'\s+',' ',' '.join(t.text or '' for t in slides[13].findall('.//a:t',ns)))
+    check('Presentation distinguishes descriptive result from business validation','Keep the model for describing purchase patterns.' in verdict and 'Commercial usefulness still needs validation.' in verdict and all(x in verdict for x in ['0.472','0.464','0.289']))
 with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2.zip') as z:
     expectednames={'01_C2_Customer_Profiles.ipynb','GROUP_Medina_Castillo_C2_Brief.pdf','GROUP_Medina_Castillo_C2_Presentation.pptx'}
     check('ZIP contains only the three permitted deliverables',set(z.namelist())==expectednames and z.testzip() is None)

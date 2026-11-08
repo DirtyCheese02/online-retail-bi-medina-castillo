@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "fresh_kernel": true,
+  "all_project_code_inline": true,
+  "isolated_from_repository_input": true,
+  "input_sha256": "8f6d42748e36cf41008f411307fe77e03b2001d25eb445dcfab5aa70186fdb4f",
+  "comparison_fields": [
+    "annual_W2_reproduction",
+    "frozen_model",
+    "metrics",
+    "model_partitions",
+    "test_profiles",
+    "test_cross",
+    "stability",
+    "value_bridge",
+    "validation_gate",
+    "customer_overlap"
+  ],
+  "analytical_change": false,
+  "revision": "Explicit descriptive verdict and business-validation limit; settings and code unchanged."
+}

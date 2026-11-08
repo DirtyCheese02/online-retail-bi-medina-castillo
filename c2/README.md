@@ -30,7 +30,9 @@ The revised deck follows the team's C1 visual reference: Montserrat titles, larg
 
 `presentation/prepare_visual_data.py` reconstructs the held coordinates and assignments from the saved monthly records and frozen model parameters without retraining. `presentation/build_visual_deck.mjs` authors the revised deck through Artifact Session using `visual_data.json`, the two C1 cover assets and `speaker_notes_source.json`. Monetary chart medians display two decimals; scatter coordinates use six decimals and chart percentage fractions use ten solely for Excel portability. Calculations in the notebook remain unchanged.
 
-The notebook and three-page brief are byte-identical to `c2-submission-2026-11-08`. That original tag and the first visual revision `c2-presentation-v2-2026-11-08` remain preserved. The presentation with the opening C1 recap and its three-file ZIP are identified by `c2-presentation-v3-2026-11-08`.
+The original C2 submission and both visual revisions remain preserved at their tags. The release `c2-audited-2026-11-08` clarifies the model verdict in notebook, brief and presentation. The analytical code, settings and numerical conclusions are unchanged. The revised notebook was freshly executed outside the repository and reproduced the frozen parameters, profiles, metrics and business follow-up. See `outputs/model_verdict_rerun.json`.
+
+**Readiness limit:** the contribution note distinguishes documented inputs from planned personal reviews. The team still needs to confirm actual individual contributions. Rubric F–H assess each student's own explanation; file checks do not certify those 40 individual points. The model is retained for descriptive profiling, while commercial usefulness remains to be assessed with recent linked data and business users.
 
 ## Contributions and AI disclosure
 
