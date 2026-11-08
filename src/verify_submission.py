@@ -5,6 +5,7 @@ import nbformat
 import numpy as np
 import pandas as pd
 from pypdf import PdfReader
+from feedback_delivery import REPO, RELEASE, link
 
 ROOT=Path(__file__).resolve().parents[1]
 checks=[]
@@ -45,6 +46,8 @@ for a,bname in [('train','validation'),('train','test'),('validation','test')]:
 sample=pd.read_csv(ROOT/'data/processed/invoice_sample_25pct.csv.gz',dtype={'InvoiceNo':'string'})
 counts=full.groupby('InvoiceNo').size().loc[sample.InvoiceNo.unique()].sort_index()
 check('Sampling preserves all lines of each selected invoice',counts.equals(sample.groupby('InvoiceNo').size().sort_index()),'invoice_sample_25pct.csv.gz')
+sample_ids=pd.read_csv(ROOT/'data/processed/sample_invoice_ids.csv',dtype={'InvoiceNo':'string'})
+check('Delivered sample identifiers exactly match actual sampled invoices',sample_ids.InvoiceNo.is_unique and set(sample_ids.InvoiceNo)==set(sample.InvoiceNo),'sample_invoice_ids.csv; actual sample')
 check('Sample approximately one quarter of source rows',.20<=len(sample)/len(full)<=.30,'sample_comparison.csv')
 strata=pd.read_csv(ROOT/'data/processed/sample_strata.csv')
 check('Invoice sample follows fixed monthly quarter counts',all(round(.25*r.available_invoices)==r.sampled_invoices for r in strata.itertuples()),'sample_strata.csv')
@@ -54,11 +57,12 @@ p['recalculated_value']=p.Quantity*p.UnitPrice
 values=p.dropna(subset=['CustomerID']).groupby('CustomerID').recalculated_value.sum().sort_values(ascending=False)
 comparison=pd.read_csv(ROOT/'data/processed/sample_comparison.csv').iloc[1]
 check('Sample KPI and country proportion match saved sample',np.isclose(100*values.head(math.ceil(.1*len(values))).sum()/values.sum(),comparison.K10_pct) and np.isclose(100*p.loc[p.Country.eq('United Kingdom'),'recalculated_value'].sum()/p.recalculated_value.sum(),comparison.UK_value_share_pct),'actual invoice sample; sample_comparison.csv')
-features=pd.read_csv(ROOT/'data/processed/invoice_preprocessing.csv')
+features=pd.read_csv(ROOT/'data/processed/invoice_preprocessing.csv',dtype={'InvoiceNo':'string'})
 params=json.loads((ROOT/'evidence/preprocessing_parameters.json').read_text())
 train=features.loc[features.split.eq('train'),'log_invoice_value']
 check('Fitted mean and scale use train invoices only',len(train)==params['fitted_invoice_count'] and np.isclose(train.mean(),params['mean']) and np.isclose(train.std(ddof=0),params['scale']), 'preprocessing_parameters.json; invoice_preprocessing.csv')
 check('Frozen training rule applied to every partition',np.allclose((features.log_invoice_value-params['mean'])/params['scale'],features.scaled_log_value),'invoice_preprocessing.csv')
+check('Preprocessing invoice keys match actual eligible subsets',all(set(features.loc[features.split.eq(k),'InvoiceNo'])==set(frame.loc[frame.eligible_purchase,'InvoiceNo']) for k,frame in parts.items()),'invoice_preprocessing.csv; actual split files')
 execution=pd.read_csv(ROOT/'data/processed/validation_execution.csv')
 check('Ordered validation gate before test with no refit',execution.step.tolist()==[1,2,3] and execution.partition.tolist()==['train','validation','test'] and execution.passed.all() and execution.fitted_count.eq(params['fitted_invoice_count']).all(),'validation_execution.csv; preprocess execution order')
 held=pd.read_csv(ROOT/'data/processed/holdout_robustness.csv')
@@ -72,6 +76,18 @@ reader=PdfReader(pdf);text='\n'.join(page.extract_text() or '' for page in reade
 check('Supplemental PDF readable with all major sections',all(s in text for s in ['Management summary','Process record','Sampling','leakage']),str(pdf.relative_to(ROOT)))
 check('No broken font-command text in PDF','ootnotesize' not in text,str(pdf.relative_to(ROOT)))
 check('PDF reports regenerated descriptive holdout findings',all(f'{x:.2f}%' in text for x in held.mean_monthly_K10_pct),'report PDF; holdout_robustness.csv')
+uris=[]
+for page in reader.pages:
+    for annotation in page.get('/Annots',[]):
+        action=annotation.get_object().get('/A',{})
+        if action.get('/URI'):uris.append(str(action['/URI']))
+check('PDF has direct versioned primary-artifact links',link('notebooks/W2_project.ipynb') in uris and link('README.md') in uris,'PDF link annotations')
+check('PDF links actual sample IDs and all three subsets',all(link(p) in uris for p in ['data/processed/sample_invoice_ids.csv','data/splits/train.csv.gz','data/splits/validation.csv.gz','data/splits/test.csv.gz']),'PDF evidence index link annotations')
+check('PDF identifies corrective tag and immutable analytical baseline',RELEASE in text and 'd33a27c97a3bb9e6b31fb9cb23be83156c11d0f3' in text.replace('\n',''),'PDF front page and submission_identity.json')
+feedback=pd.read_csv(ROOT/'evidence/W2_feedback_response.csv')
+check('Every actual W2 deduction has traceable evidence',set(feedback.criterion)=={'C2','D2','F2','F3','F4','G1','G2'} and all((ROOT/p).is_file() for paths in feedback.evidence_paths for p in paths.split('; ')),'W2_feedback_response.csv')
+bridge=pd.read_csv(ROOT/'evidence/value_scope_bridge.csv')
+check('Unidentified value remains separate without altering K10',len(bridge)==3 and np.isclose(bridge.share_of_all_eligible_value_pct.sum(),100) and np.isclose(bridge.iloc[0].share_of_all_eligible_value_pct,b['K10_pct']*b['ID_coverage_pct']/100) and np.isclose(bridge.iloc[2].share_of_all_eligible_value_pct,100-b['ID_coverage_pct']),'value_scope_bridge.csv')
 check('Final C1 presentation snapshot preserved',len(PdfReader(ROOT/'assessments/C1/presentation/GROUP_Medina_Castillo_C1_Slides.pdf').pages)==15,'assessments/C1/presentation/')
 check('No tracked candidate exceeds GitHub 100 MiB file limit',all(p.stat().st_size<100*1024**2 for p in ROOT.rglob('*') if p.is_file() and not any(x in p.parts for x in ['.git','.venv','qa'])),'project file sizes')
 out={'result':'PASS','checks':checks,'pdf_pages':len(reader.pages),'summary_words':len(summary.split())}

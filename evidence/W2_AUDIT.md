@@ -1,5 +1,7 @@
 # W2 rubric audit — 21 October 2026
 
+> Historical technical audit. Actual W2 feedback recorded on 8 November reports that the evaluator received only the supplemental PDF, without the executable evidence or direct versioned links. Passing local checks did not establish completeness of the received hand-in. The corrective response is in `W2_feedback_response.csv`, `SUBMISSION.md` and release `w2-feedback-2026-11-08`. This earlier audit is not an instructor score or evidence of timely receipt.
+
 ## Scope and conclusion
 
 This audit checks the specific *Workshop 2: From Exploratory Analysis to Credible Validation* brief against the primary notebook, its actual data subsets, the README and supplemental report. The 23 scoring components in `rubric_matrix.csv` sum to 100 available points. The table below maps full-credit evidence; it is not an awarded or guaranteed score.

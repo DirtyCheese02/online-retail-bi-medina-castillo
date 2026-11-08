@@ -92,6 +92,11 @@
       "evidence": "invoice_sample_25pct.csv.gz"
     },
     {
+      "check": "Delivered sample identifiers exactly match actual sampled invoices",
+      "status": "PASS",
+      "evidence": "sample_invoice_ids.csv; actual sample"
+    },
+    {
       "check": "Sample approximately one quarter of source rows",
       "status": "PASS",
       "evidence": "sample_comparison.csv"
@@ -115,6 +120,11 @@
       "check": "Frozen training rule applied to every partition",
       "status": "PASS",
       "evidence": "invoice_preprocessing.csv"
+    },
+    {
+      "check": "Preprocessing invoice keys match actual eligible subsets",
+      "status": "PASS",
+      "evidence": "invoice_preprocessing.csv; actual split files"
     },
     {
       "check": "Ordered validation gate before test with no refit",
@@ -157,6 +167,31 @@
       "evidence": "report PDF; holdout_robustness.csv"
     },
     {
+      "check": "PDF has direct versioned primary-artifact links",
+      "status": "PASS",
+      "evidence": "PDF link annotations"
+    },
+    {
+      "check": "PDF links actual sample IDs and all three subsets",
+      "status": "PASS",
+      "evidence": "PDF evidence index link annotations"
+    },
+    {
+      "check": "PDF identifies corrective tag and immutable analytical baseline",
+      "status": "PASS",
+      "evidence": "PDF front page and submission_identity.json"
+    },
+    {
+      "check": "Every actual W2 deduction has traceable evidence",
+      "status": "PASS",
+      "evidence": "W2_feedback_response.csv"
+    },
+    {
+      "check": "Unidentified value remains separate without altering K10",
+      "status": "PASS",
+      "evidence": "value_scope_bridge.csv"
+    },
+    {
       "check": "Final C1 presentation snapshot preserved",
       "status": "PASS",
       "evidence": "assessments/C1/presentation/"
@@ -167,6 +202,6 @@
       "evidence": "project file sizes"
     }
   ],
-  "pdf_pages": 12,
+  "pdf_pages": 14,
   "summary_words": 141
 }

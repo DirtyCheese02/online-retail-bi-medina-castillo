@@ -1,8 +1,8 @@
 {
   "editor_compile": "success",
-  "exporter": "bundled Tectonic 0.17.0",
+  "exporter": "bundled Tectonic",
   "exported_pdf": true,
   "overfull_warning_count": 0,
-  "visual_review": "12-page contact sheet reviewed; pages 8, 9, 10 and final page 11 reviewed individually. No clipped tables or overlapping content.",
-  "audit_date": "2026-10-21"
+  "visual_review": "All 14 pages reviewed in contact sheet; revised front page and evidence/C2 continuation pages 12 and 13 reviewed individually. No overlapping text, clipped tables or layout spill.",
+  "corrective_release_date": "2026-11-08"
 }

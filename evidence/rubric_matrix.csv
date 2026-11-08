@@ -19,6 +19,6 @@ F,8,"Actual subsets, counts, overlap and reproducibility",data/splits/*.csv.gz; 
 F,4,Train-only fitted preprocessing,preprocessing_parameters.json; invoice_preprocessing.csv
 F,4,Validation without test tuning,Notebook 6; validation_execution.csv; fixed protocol; invariant scaler parameters
 F,4,Limits of test information,Notebook 6–7; holdout_robustness.csv; prior full-case exploration and customer recurrence
-G,2,Executed notebook and README,Saved sequential outputs; root README
-G,2,Management summary and traceability,141-word summary; snapshots commit; final tag
+G,2,Executed notebook and README,Saved sequential outputs; root README; SUBMISSION.md; direct PDF links
+G,2,Management summary and traceability,141-word summary; PDF repository URL/release tag/baseline SHA; submission_identity.json
 G,1,AI disclosure and English,Notebook 8; report Process record

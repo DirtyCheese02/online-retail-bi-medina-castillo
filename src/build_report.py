@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import pandas as pd
+from feedback_delivery import REPO, RELEASE, BASELINE_SHA, link, code_link
 
 ROOT=Path(__file__).resolve().parents[1]
 P=ROOT/'data/processed'
@@ -45,14 +46,22 @@ chunks=[r'''\documentclass[10pt,a4paper]{article}
 {\small\bfseries\color{navy} BUSINESS INTELLIGENCE / WORKSHOP 2}\par\vspace{.6em}
 {\LARGE\bfseries Customer concentration: from EDA to credible validation}\par\vspace{.35em}
 {\large A descriptive validation and sampling study of UCI Online Retail}\par\vspace{.5em}
-{\color{muted}Mois\'es Medina and Ignacia Castillo\hfill 20 October 2026}\par
+{\color{muted}Mois\'es Medina and Ignacia Castillo\hfill Revised 8 November 2026}\par
 \vspace{.6em}{\color{rule}\hrule height .65pt}\vspace{.6em}
-\textbf{Submission role.} This is a supplemental report. The primary W2 evidence is the executable English notebook \path{notebooks/W2_project.ipynb}, with saved outputs, data and execution instructions in the GitHub repository. The specific W2 brief sets the deadline at 29 October 2026, 23:59, Chile. Its printed release date is 22 October; that header is not a claim about when this work was performed.
+\textbf{Submission role.} This is a supplemental report; the executed English notebook and README are the primary artifacts. The original analysis was prepared on 20 October for the specific W2 deadline of 29 October 2026, 23:59, Chile. This correction, recorded on 8 November after feedback, makes the executable evidence accessible. It does not claim that the missing artifacts were received on time or that the grade changed.
+''']
+chunks.append(r'{\small\textbf{Repository:} \url{'+REPO+r'}\par'+
+    r'\textbf{Corrective release:} \href{'+REPO+'/tree/'+RELEASE+r'}{\texttt{'+RELEASE+r'}}; '+
+    r'\href{'+link('notebooks/W2_project.ipynb')+r'}{executed notebook}; '+
+    r'\href{'+link('README.md')+r'}{README and execution instructions}.\par'+
+    r'\textbf{Immutable analytical baseline SHA:} \path{'+BASELINE_SHA+r'}. '+
+    r'This is the pre-feedback code/data baseline; the corrective release has its own later commit.}\par')
+chunks.append(r'''
 
 \sectionhead{1\quad Continuity, decision and measurement}
 We retain the W1/C1 question: how much eligible recorded purchase value is attributable to the highest-value 10\% of identifiable customers, and how much value cannot enter that ranking because an ID is missing? A proposed commercial analyst could use the evidence for a retrospective account review and a review of ID capture. This is a proposed use, not the anonymous retailer's documented strategy.
 
-The team reports 100/100 in C1. No specific instructor correction text was supplied for this stage. We therefore identify self-audits and new W2 extensions explicitly; a new validation requirement is not presented as proof that C1 was incorrect. The original W1/C1 submissions are preserved under \path{assessments/}.
+The team reports 100/100 in C1. The initial W2 self-audits remain identified as such in Section 4. Actual W2 feedback, recorded later from the team, concerns missing received evidence and traceability; Section 11 responds to it. The original W1/C1 submissions and earlier W2 tags remain preserved.
 
 Let $v_i$ denote eligible recorded value for known customer $i$, $N$ the known-ID population and $k=\lceil0.10N\rceil$. Sorting $v_i$ from highest to lowest,
 \[
@@ -60,7 +69,7 @@ K_{10}=100\frac{\sum_{i=1}^{k}v_i}{\sum_{i=1}^{N}v_i},\qquad
 C_{ID}=100\frac{\text{known-ID eligible value}}{\text{all eligible purchase value}}.
 \]
 Values use pounds sterling; both measures are percentages. Cutoffs round upward to whole IDs. ID coverage is value-weighted, not a fraction of rows. Neither measure is net revenue, margin, loyalty, lifetime value or an established risk tolerance.
-''']
+''')
 chunks.append(table(['Reproduced C1 baseline','W2 result'],[
     ('Source invoice lines',f'{M["source_rows_before"]:,}'),('Eligible positive purchase lines',f'{B["purchase_lines"]:,}'),
     ('Identifiable customers / top-decile IDs',f'{B["known_customers"]:,} / {B["top_ids"]:,}'),
@@ -189,7 +198,7 @@ chunks.append(r'''\sectionhead{10\quad Process record and rubric evidence}
 The unchanged input hash, source-row conservation, baseline reproduction, seventeen quality checks, whole-invoice sample, partition overlaps and scaler parameters are executable evidence. \path{evidence/protocol.json} records seed, row rules, time windows, exposure history and the no-test-tuning policy. The notebook is run from a fresh kernel with saved outputs. Exported tables and figures are regenerated from that same code; this report's numeric content is generated from those outputs.
 
 \subhead{Feedback and contributions}
-The team-reported C1 result is 100/100. No case-specific correction text is fabricated. Section 4 records five self-audit/extension entries. The members are Mois\'es Medina and Ignacia Castillo; no new individual task division or personal reflection has been invented for W2.
+The team-reported C1 result is 100/100. Section 4 retains five original self-audit/extension entries. Actual W2 feedback is recorded separately in \path{evidence/W2_feedback_response.csv} and Section 11; it is not retroactively attributed to C1. The members are Mois\'es Medina and Ignacia Castillo; no new individual task division or reflection is asserted.
 
 \subhead{AI use and verification}
 OpenAI Codex assisted with code, notebook/report drafts and formatting. The implementation request prescribed continuity, invoice sampling, fixed seed, time partitions and a training-only scaler. Accepted suggestions include explicit flags and exported check evidence. Claims that zero prices have a proven discount cause, repeats are proven errors, C invoices establish matched returns, or the holdout is pristine are excluded. Assertions and automated reruns verify consequential suggestions. Those are automated checks, not claims that a particular student personally performed each check. The team is responsible for reviewing and defending the final analysis.
@@ -203,6 +212,55 @@ chunks.append(r'{\small'+'\n'+table(['W2 criterion','Inspectable evidence'],[
     ('F Holdout and validation','Notebook 6; actual split files, counts, overlaps, fit parameters and prior-exposure limit'),
     ('G Communication','Executed English notebook; README; summary; AI statement; repository commit/tag')])+ '}\n')
 chunks.append(r'''\clearpage
+\sectionhead{11\quad Actual W2 feedback: correction and direct evidence}
+The instructor reported that only this supplemental PDF was received, without the executable notebook, code/subsets or a direct versioned repository link. The analytical files already existed, but local verification did not establish completeness of the received hand-in. We correct that delivery gap below; original rules, seed, windows and baseline results remain unchanged.
+
+\textbf{Read or rerun the primary evidence.} Open the notebook and README through the front-page links. For execution, clone the repository at the corrective release tag, install \path{requirements.txt}, and run \path{python src/execute_notebook.py}. The notebook imports the included source modules and reads the included public data; the PDF or notebook alone is not a self-contained execution package.
+''')
+evidence_rows=[
+    ('C2 (-3)', 'Inspect the seventeen executable quality checks.',
+     [('validate implementation',code_link('validate')),('saved quality results',link('data/processed/quality_checks.csv'))]),
+    ('D2 (-2)', 'Reproduce the fixed-seed invoice sample and inspect selected IDs.',
+     [('sampling implementation',code_link('sample_invoices')),('sample IDs',link('data/processed/sample_invoice_ids.csv')),('actual sample',link('data/processed/invoice_sample_25pct.csv.gz'))]),
+    ('F2 (-4)', 'Inspect actual subsets and verify membership/overlap.',
+     [('split implementation',code_link('make_splits')),('train',link('data/splits/train.csv.gz')),('validation',link('data/splits/validation.csv.gz')),('test',link('data/splits/test.csv.gz')),('overlap results',link('data/processed/split_overlap.csv'))]),
+    ('F3 (-2)', 'Verify the training-only fitted scaler and unchanged transforms.',
+     [('preprocessing implementation',code_link('preprocess')),('fitted parameters',link('evidence/preprocessing_parameters.json')),('invoice-level transforms',link('data/processed/invoice_preprocessing.csv'))]),
+    ('F4 (-2)', 'Verify the validation gate precedes test transformation.',
+     [('gate implementation',code_link('preprocess')),('ordered execution log',link('data/processed/validation_execution.csv')),('development hierarchy',link('data/processed/split_hierarchy.csv'))]),
+    ('G1 (-2)', 'Attach the primary files and include the direct repository link.',
+     [('executed notebook',link('notebooks/W2_project.ipynb')),('README',link('README.md')),('hand-in instructions',link('SUBMISSION.md'))]),
+    ('G2 (-1)', 'Identify an inspectable W2 version in the report itself.',
+     [('release tree',REPO+'/tree/'+RELEASE),('version identity',link('evidence/submission_identity.json'))]),
+]
+rows=[]
+for criterion,action,links in evidence_rows:
+    refs='; '.join(r'\href{'+url.replace('#',r'\#')+'}{'+esc(label)+'}' for label,url in links)
+    rows.append(esc(criterion)+' & '+esc(action)+' & '+refs+r' \\')
+chunks.append(r'{\small\begin{tabularx}{\linewidth}{@{}P{.12\linewidth}P{.35\linewidth}Y@{}}\toprule'+
+    r'\textbf{Feedback} & \textbf{Correction} & \textbf{Clickable evidence} \\ \midrule'+'\n'+
+    '\n'.join(rows)+r'\bottomrule\end{tabularx}}')
+chunks.append(r'''\par\textbf{Receipt control.} Attach the executed notebook and README when required, include this PDF as a supplement, and paste the repository URL, full submitted SHA and direct versioned tree into the submission form. Resolve the release tag to its full SHA with \path{git rev-parse 'w2-feedback-2026-11-08^{commit}'}. The baseline SHA on page 1 identifies the unchanged pre-feedback analysis, not this PDF's own commit.
+
+The criterion codes and deductions above are the W2 scoring comments relayed by the team; ``C2'' in this table is a rubric subcriterion, not Certamen 2. No regrade or late-submission acceptance is asserted.
+\clearpage
+\sectionhead{12\quad C2 continuation: value coverage and stability}
+The instructor recommends testing concentration in a later period or a recently observed cohort, and examining which commercial decisions remain defensible when unidentified value is kept separate. These are next-stage questions, not completed C2 results.
+
+\subhead{Initial decomposition of value scope}
+We keep the known-ID top group fixed at the existing 430 accounts. The following accounting decomposition changes only the denominator to all eligible purchase value. K10 itself remains a known-ID measure.
+''')
+bridge=pd.read_csv(ROOT/'evidence/value_scope_bridge.csv')
+chunks.append(table(['Value bucket','Share of all eligible purchase value'],[(r.value_bucket,f'{r.share_of_all_eligible_value_pct:.2f}%') for r in bridge.itertuples()]))
+chunks.append(r'''The known top group has attributable purchase value equal to $K_{10}\times C_{ID}/100$ percent of all eligible value. Unidentified purchases form an aggregate bucket which may contain many people; they are never treated as one customer or assigned a fabricated ID. The three shares sum to 100\% before rounding.
+
+\textbf{Defensible decisions.} Review the identified high-contribution accounts and their invoices, and investigate the separate unidentified-value bucket through ID-capture diagnostics. The evidence does not establish that the identified group is the top 10\% of all real customers, or that a discount/loyalty intervention would improve profit. Customer-level allocation of the unidentified bucket requires verified linkage.
+
+\subhead{Planned temporal and cohort extension}
+Freeze an earlier ranking using information through 30 September 2011, then follow those same accounts in October--November. Contrast their later value share with a contemporaneous re-ranked top decile, reporting active counts, coverage and denominators. This distinguishes persistence of important accounts from the mere existence of concentration in each month.
+
+A separate first-observed cohort comparison should use equal follow-up windows and flag incomplete histories. First observed in this file is not proof of actual acquisition. All existing 2011 periods were previously explored: this would be a retrospective extension, not prospective validation or evidence about recent 2026 customers. Genuinely recent data are not currently available. The detailed proposed protocol is in \path{docs/C2_FEEDBACK_PLAN.md}; no new model or unseen-data conclusion is claimed here.
+\clearpage
 \sectionhead{References and source attribution}
 \begin{enumerate}
 \item Chen, D. (2015). \emph{Online Retail}. UCI Machine Learning Repository. DOI: \href{https://doi.org/10.24432/C5BW33}{10.24432/C5BW33}. Dataset/dictionary/licence: \url{https://archive.ics.uci.edu/dataset/352/online-retail}. CC BY 4.0. Original retrieval evidence remains in the preserved source manifest; W2 uses the unchanged local extract.

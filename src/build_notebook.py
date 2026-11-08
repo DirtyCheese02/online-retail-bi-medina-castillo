@@ -8,11 +8,13 @@ def md(s): cells.append(nbf.v4.new_markdown_cell(s.strip()))
 def code(s): cells.append(nbf.v4.new_code_cell(s.strip()))
 
 md('''# Workshop 2 — Customer concentration: from EDA to credible validation
-**Business Intelligence · Moisés Medina and Ignacia Castillo · 20 October 2026**
+**Business Intelligence · Moisés Medina and Ignacia Castillo · Original analysis: 20 October 2026; corrective release: 8 November 2026**
 
 This notebook is the primary W2 submission. Its question remains: **how much eligible recorded purchase value comes from the highest-value 10% of identifiable customers, and how much value is outside that ranking because an ID is missing?** Our proposed user is a commercial analyst reviewing a historical customer portfolio. The proposed action is to examine major accounts together with the ID-capture process. This is not a claim about the anonymous retailer's actual strategy.
 
-The team reports **100/100 in C1**; no specific instructor correction text was supplied for W2. We therefore label the following new checks and clarifications as **self-audits or W2 extensions**, rather than inventing negative feedback. Preserved W1/C1 artifacts are under `assessments/`.
+The team reports **100/100 in C1**. The original W2 preparation used **self-audits or W2 extensions** because no specific C1 correction text had been supplied. W2 feedback was subsequently relayed by the team and recorded on **8 November 2026**: the received hand-in lacked the notebook, code/subset evidence and direct version links. Section 7.1 responds to those actual comments. Preserved W1/C1 artifacts and earlier W2 tags remain historical records; this correction does not claim an on-time resubmission or changed grade.
+
+**Corrective release:** [w2-feedback-2026-11-08](https://github.com/DirtyCheese02/online-retail-bi-medina-castillo/tree/w2-feedback-2026-11-08). [Execution instructions](https://github.com/DirtyCheese02/online-retail-bi-medina-castillo/blob/w2-feedback-2026-11-08/README.md). Keep this notebook with its repository-relative modules/data when rerunning it.
 
 The specific W2 brief takes precedence over the old calendar: its deadline is **29 October 2026, 23:59, Chile**. The brief prints 22 October as its release date; we do not use that header to invent a work date. This notebook develops the existing descriptive project and fits no predictive model.
 
@@ -129,6 +131,18 @@ md('''## 7. Contextual leakage audit
 The table distinguishes an observed overlap, an actual information violation and a hypothetical future misuse. A shared CustomerID is not automatically inappropriate for the stated same-account time scenario, but it precludes a claim of independent new-customer evaluation. Target-derived leakage is assessed conditionally because the present project has no predictive target.''')
 code('''leakage = w2.leakage_audit(data, overlap, preprocessing_parameters)
 display(leakage)''')
+md('''## 7.1. Actual W2 feedback: inspectable evidence and next-stage questions
+The instructor deductions concern evidence absent from the received hand-in. The implementation and saved subsets exist in the repository; providing accessible links and attaching the primary artifacts addresses this delivery gap. The table below maps each comment to files and checks. These corrections do not change eligibility, seed, partition dates, scaler fitting or the original numerical conclusion.
+
+The instructor also recommends testing concentration in a later period/recently observed cohort and studying decisions with unidentified value kept separate. The initial decomposition below uses **all eligible value** as its denominator. The unidentified bucket can contain many people; it is not one artificial customer and never enters K10 as an ID. Reviewing the identified major accounts and investigating ID capture remain defensible. A claim that they are the top accounts among all real customers remains unsupported.
+
+`docs/C2_FEEDBACK_PLAN.md` specifies the next-stage comparison: freeze an earlier ranking and follow those same accounts later, distinguish it from re-ranking, and use equal follow-up for first-observed cohorts. Existing 2011 periods were previously explored; genuinely recent customer data are not available. The temporal/cohort extension remains pending and is not presented as completed C2 work.''')
+code('''from feedback_delivery import response_table, value_scope_bridge, write_identity
+feedback_identity = write_identity()
+display(response_table())
+display(value_scope_bridge())
+print('Corrective release:', feedback_identity['corrective_release_tree_url'])
+print('Immutable analysis baseline:', feedback_identity['analysis_baseline_sha'])''')
 md('''## 9. Management interpretation and next step
 The summary below is generated from verified outputs and has 120–180 words. Observed facts, scope assumptions and proposed managerial actions remain distinct.''')
 code('''results = w2.finalize(stats, quality_details, comparison, preprocessing_parameters, quality, split_summary)

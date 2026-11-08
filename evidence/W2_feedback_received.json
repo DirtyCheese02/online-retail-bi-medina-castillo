@@ -1,0 +1,21 @@
+{
+  "source": "Instructor feedback transcribed by the team in this chat",
+  "recorded_on": "2026-11-08",
+  "instructor_issue_date": null,
+  "team_explanation": "The team reports forgetting to attach the notebook.",
+  "deductions": [
+    {"criterion": "C2", "points": 3, "text": "El PDF presenta 17 controles y resultados, pero no proporciona el notebook ejecutable al que remite; no se puede inspeccionar la implementación programática requerida."},
+    {"criterion": "D2", "points": 2, "text": "La muestra estratificada por factura (~25%) se describe con resultados y semilla, pero no se entrega código ni identificadores de la muestra para verificarla."},
+    {"criterion": "F2", "points": 4, "text": "Se informan particiones de 285.421/85.510/145.453 filas y cero solapamiento de facturas, pero no se aportan subconjuntos ni código que permita comprobar esas verificaciones."},
+    {"criterion": "F3", "points": 2, "text": "El entrenamiento exclusivo de StandardScaler se describe y se reportan parámetros, pero no hay implementación ejecutable disponible para comprobar el ajuste y transformaciones."},
+    {"criterion": "F4", "points": 2, "text": "Se describe una puerta de validación y su resultado, pero no se puede inspeccionar la implementación ni sus comprobaciones de exclusión del test."},
+    {"criterion": "G1", "points": 2, "text": "Se entregó un informe PDF complementario; el notebook ejecutable en inglés y README indicados como entregables principales no figuran entre los archivos recibidos ni existe enlace GitHub directo."},
+    {"criterion": "G2", "points": 1, "text": "El informe sí tiene resumen gerencial, pero no incluye URL del repositorio ni SHA/tag verificable de W2."}
+  ],
+  "next_stage_recommendations": [
+    "Contrastar la estabilidad de la concentración en un período posterior o una cohorte reciente de clientes.",
+    "Estudiar qué decisiones comerciales siguen siendo defendibles cuando el valor no identificable se trata como una categoría separada.",
+    "No olvidar adjuntar el notebook cuando es requerido."
+  ],
+  "grade_change_or_resubmission_acceptance": "Not provided; no claim is made."
+}

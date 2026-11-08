@@ -1,0 +1,10 @@
+{
+  "feedback_recorded_on": "2026-11-08",
+  "repository_url": "https://github.com/DirtyCheese02/online-retail-bi-medina-castillo",
+  "corrective_release_tag": "w2-feedback-2026-11-08",
+  "analysis_baseline_sha": "d33a27c97a3bb9e6b31fb9cb23be83156c11d0f3",
+  "baseline_role": "Immutable pre-feedback executable analysis; analytical rules/results unchanged",
+  "corrective_release_tree_url": "https://github.com/DirtyCheese02/online-retail-bi-medina-castillo/tree/w2-feedback-2026-11-08",
+  "primary_notebook_url": "https://github.com/DirtyCheese02/online-retail-bi-medina-castillo/blob/w2-feedback-2026-11-08/notebooks/W2_project.ipynb",
+  "readme_url": "https://github.com/DirtyCheese02/online-retail-bi-medina-castillo/blob/w2-feedback-2026-11-08/README.md"
+}

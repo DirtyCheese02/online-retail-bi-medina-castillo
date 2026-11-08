@@ -1,11 +1,19 @@
 # Online Retail BI — Medina and Castillo
 
-**Business Intelligence IIB423T-1 · Workshop 2 · 20 October 2026**  
+**Business Intelligence IIB423T-1 · Workshop 2 · Original analysis 20 October; corrective release 8 November 2026**  
 **Authors:** Moisés Medina and Ignacia Castillo  
 **Specific W2 deadline:** 29 October 2026, 23:59, Chile  
 **Repository:** https://github.com/DirtyCheese02/online-retail-bi-medina-castillo
 
-We continue the W1/C1 descriptive question: how concentrated is eligible recorded purchase value among identifiable customers, and how much value cannot enter that ranking? The proposed user is a commercial analyst reviewing historical accounts and ID capture. We retain K10 and ID-value coverage; no model or predictive accuracy is claimed. The team reports 100/100 in C1. New concerns are labelled self-audits or W2 extensions, not invented instructor feedback.
+We continue the W1/C1 descriptive question: how concentrated is eligible recorded purchase value among identifiable customers, and how much value cannot enter that ranking? The proposed user is a commercial analyst reviewing historical accounts and ID capture. We retain K10 and ID-value coverage; no model or predictive accuracy is claimed. The team reports 100/100 in C1. Original W2 self-audits remain labelled as such; the later actual W2 feedback is recorded separately in `evidence/W2_feedback_response.csv`.
+
+## Corrective hand-in after W2 feedback
+
+The instructor received a supplemental PDF without the primary executable evidence or direct versioned GitHub access. This release makes that evidence inspectable and records the correction; it does not claim the missing files were received on time or that the grade changed.
+
+**Current release:** [w2-feedback-2026-11-08](https://github.com/DirtyCheese02/online-retail-bi-medina-castillo/tree/w2-feedback-2026-11-08). **Hand-in instructions:** [SUBMISSION.md](SUBMISSION.md). Attach the executed notebook and README when required, and include the versioned tree plus full submitted SHA in the submission text. Downloading the PDF alone is insufficient.
+
+The PDF now contains the repository URL, release tag, immutable analytical-baseline SHA and direct links to the notebook, code, sample identifiers and actual subsets. The unchanged analytical baseline is commit `d33a27c97a3bb9e6b31fb9cb23be83156c11d0f3`; the corrective release is a later version. [C2 continuation plan](docs/C2_FEEDBACK_PLAN.md) records the two research recommendations without claiming that extension is complete.
 
 ## Open the submission
 
@@ -80,6 +88,6 @@ The entire period was explored in W1/C1. The held periods are descriptive robust
 
 ## Submission traceability
 
-W1/C1 snapshots were committed before W2 development. The original W2 version is preserved at **`w2-submission`**. The revised delivery after the rubric audit is tagged **`w2-audited-2026-10-21`**. Retrieve its immutable commit with `git rev-parse w2-audited-2026-10-21^{commit}` and submit that full SHA with the repository link; the final handoff message supplies the direct tree URL. A commit's own hash is not embedded inside itself. See `evidence/W2_AUDIT.md` for findings, corrections and remaining limitations; no grade is guaranteed.
+W1/C1 snapshots were committed before W2 development. Earlier W2 versions remain at **`w2-submission`** and **`w2-audited-2026-10-21`**. The post-feedback corrective release is **`w2-feedback-2026-11-08`**. Retrieve its immutable commit with `git rev-parse 'w2-feedback-2026-11-08^{commit}'` and include that full SHA with the repository/tree link. The PDF identifies the stable release tag and pre-feedback analytical-baseline SHA rather than claiming to contain its own commit hash. `evidence/W2_AUDIT.md` remains a historical technical audit; actual receipt feedback takes precedence over its earlier delivery-readiness assessment.
 
 The original rubric/course notebooks are referenced in the submission but are not republished. Earlier teacher-related statements inside assessment snapshots are historical records. The W2 feedback table identifies self-audits explicitly. The team remains responsible for reviewing and defending the work; automated checks are not represented as personal student verification.
