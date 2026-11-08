@@ -6,7 +6,7 @@ The [C2 project](c2/README.md) follows the updated IIB423T-1 brief: one ZIP with
 
 Deadline in the updated brief: **8 November 2026 end of day, Santiago**. Defense: **10 November 2026**. The historical W2 instructions below apply to W2, not the C2 ZIP.
 
-Current release **`c2-audited-2026-11-08`** makes the descriptive model verdict and business-validation limit explicit across notebook, brief and presentation. The C1 recap, visual style and ten editable charts remain. A fresh isolated notebook run reproduces the unchanged numerical analysis. The original submission and visual revision tags remain preserved.
+Current release **`c2-roles-2026-11-08`** adds the agreed review/defense responsibilities to the audited notebook and brief. The descriptive model verdict, C1 recap, visual style and ten editable charts remain. A fresh isolated notebook run in the audited release reproduced the unchanged numerical analysis. Earlier submission and revision tags remain preserved.
 
 **Business Intelligence IIB423T-1 · Workshop 2 · Original analysis 20 October; corrective release 8 November 2026**  
 **Authors:** Moisés Medina and Ignacia Castillo  

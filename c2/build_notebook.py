@@ -174,7 +174,12 @@ md('''## 8. Conclusions, limits and next improvement
 **Next improvement.** Obtain recent transactions with verified customer linkage, apply the frozen grouping to complete comparable months and review profiles with a commercial stakeholder before considering an intervention. Reliable linking of the unidentified bucket would expand coverage; a campaign's effect would require separate evaluation.''')
 md('''## 9. Contributions, AI use and references
 
-**Contribution note:** Moisés provided our project context, source data/previous deliveries, updated course brief and W2 feedback. **Assigned defense preparation:** for our final review, Moisés will check preparation, fitting and validation; Ignacia will check profiles, the reference comparison and business interpretation. These are planned review responsibilities. Both of us will review the interpretation and prepare to explain the whole submitted route.
+**Contribution note:** Moisés provided our project context, source data/previous deliveries, updated course brief and W2 feedback.
+
+**Agreed division of responsibilities for final review and defense:**
+- **Moisés Medina:** data preparation, feature construction, model training and evaluation.
+- **Ignacia Castillo:** profile interpretation, comparison with the simple reference and business conclusions.
+- **Both members:** research question, methodological decisions, final review and presentation. Each of us prepares to explain the whole submitted route.
 
 **AI assistance:** OpenAI Codex assisted with code, notebook/brief/presentation drafts and automated consistency checks. Verification includes input hashing, W2 result reproduction, source/partition conservation, identical comparison records, training-only fit invariance and a complete fresh-kernel run. These are automated checks, not an assertion that a particular student personally performed them. The team remains responsible for reviewing the interpretation and defending each decision. No instructor feedback or completed individual contribution is invented.
 

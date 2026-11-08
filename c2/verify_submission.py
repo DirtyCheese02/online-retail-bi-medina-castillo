@@ -23,7 +23,7 @@ check('All notebook code cells executed sequentially',[c.execution_count for c i
 check('No notebook execution error',not any(o.output_type=='error' for c in codes for o in c.outputs))
 check('Code and outputs include all project logic inline',all(f'def {n}(' in code for n in ['load_source','check_preparation','monthly_records','fit_first_model','assess','validation_gate','concentration_followup']) and not re.search(r'from (c2_analysis|w2_analysis|feedback_delivery) import',code))
 check('At least three saved plot outputs',sum('image/png' in o.get('data',{}) for c in codes for o in c.outputs)>=3)
-check('Group, source, contribution and AI notes present',all(x in text for x in ['Moisés Medina','Ignacia Castillo','UCI Online Retail','Assigned defense preparation','AI assistance']))
+check('Group, source, contribution and AI notes present',all(x in text for x in ['Moisés Medina','Ignacia Castillo','UCI Online Retail','Agreed division of responsibilities','AI assistance']))
 check('Descriptive clustering route and no accuracy claim','Route: descriptive clustering' in text and 'not accuracy' in text)
 check('Unchanged W2 baseline reproduced',R['annual_W2_reproduction']['known_ids']==4293 and np.isclose(R['annual_W2_reproduction']['K10_pct'],60.50013933127034))
 check('W2 source split counts retained',[x['source_rows'] for x in R['source_partitions']]==[285421,85510,145453])
@@ -104,7 +104,7 @@ with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2.zip') as z:
     expectednames={'01_C2_Customer_Profiles.ipynb','GROUP_Medina_Castillo_C2_Brief.pdf','GROUP_Medina_Castillo_C2_Presentation.pptx'}
     check('ZIP contains only the three permitted deliverables',set(z.namelist())==expectednames and z.testzip() is None)
     check('ZIP bytes match the verified individual files',all(z.read(n)==(DELIVERY/n).read_bytes() for n in expectednames))
-check('Contributions distinguish documented inputs from planned reviews','planned review responsibilities' in text and 'Moisés will check' in text and 'Ignacia will check' in text)
+check('Contribution note includes the agreed review and defense responsibilities',all(x in text for x in ['Agreed division of responsibilities for final review and defense','data preparation, feature construction, model training and evaluation','profile interpretation, comparison with the simple reference and business conclusions','research question, methodological decisions, final review and presentation']))
 latex=json.loads((HERE/'qa/latex_export.json').read_text(encoding='utf-8-sig'))
 check('LaTeX export succeeded without overflowing content',latex['exitCode']==0 and 'Overfull' not in latex['log'])
 record={'status':'PASS','checks':checks,'check_count':len(checks),'notebook_code_cells':len(codes),'brief_pages':len(reader.pages),

@@ -32,10 +32,10 @@ The revised deck follows the team's C1 visual reference: Montserrat titles, larg
 
 The original C2 submission and both visual revisions remain preserved at their tags. The release `c2-audited-2026-11-08` clarifies the model verdict in notebook, brief and presentation. The analytical code, settings and numerical conclusions are unchanged. The revised notebook was freshly executed outside the repository and reproduced the frozen parameters, profiles, metrics and business follow-up. See `outputs/model_verdict_rerun.json`.
 
-**Readiness limit:** the contribution note distinguishes documented inputs from planned personal reviews. The team still needs to confirm actual individual contributions. Rubric F–H assess each student's own explanation; file checks do not certify those 40 individual points. The model is retained for descriptive profiling, while commercial usefulness remains to be assessed with recent linked data and business users.
+The role update `c2-roles-2026-11-08` records the agreed division of responsibilities for final review and defense. Moisés covers data preparation, features, model and evaluation; Ignacia covers profiles, reference comparison and business conclusions; both cover the question, methodology, final review and presentation. Allocation does not certify that every review task is complete. Rubric F–H assess each student's own explanation; file checks do not certify those 40 individual points.
 
 ## Contributions and AI disclosure
 
-Moisés supplied project materials, the updated brief and actual W2 feedback. Preparation/training review is assigned to Moisés and profiles/reference/interpretation review to Ignacia as planned responsibilities; their completion was not confirmed. The notebook does not invent completed contributions. Codex assisted with code/text/layout drafts and automated verification; students remain responsible for review and defense.
+Moisés supplied project materials, the updated brief and actual W2 feedback. The notebook records the agreed review/defense responsibilities above. Codex assisted with code/text/layout drafts and automated verification; students remain responsible for review and defense.
 
 Source: Chen (2015), UCI Online Retail, DOI 10.24432/C5BW33, CC BY 4.0. Exact input attribution and limits are inside the notebook. Earlier W1/C1/W2 files and tags are preserved.

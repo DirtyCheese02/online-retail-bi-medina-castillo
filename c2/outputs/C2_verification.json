@@ -218,7 +218,7 @@
       "result": "PASS"
     },
     {
-      "check": "Contributions distinguish documented inputs from planned reviews",
+      "check": "Contribution note includes the agreed review and defense responsibilities",
       "result": "PASS"
     },
     {
