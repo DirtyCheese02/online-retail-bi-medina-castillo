@@ -6,7 +6,7 @@ The [C2 project](c2/README.md) follows the updated IIB423T-1 brief: one ZIP with
 
 Deadline in the updated brief: **8 November 2026 end of day, Santiago**. Defense: **10 November 2026**. The historical W2 instructions below apply to W2, not the C2 ZIP.
 
-Presentation revision **`c2-presentation-v2-2026-11-08`** adds the C1 visual style and ten editable charts. It updates the three-file ZIP while preserving the executed notebook, brief and original **`c2-submission-2026-11-08`** tag.
+Presentation revision **`c2-presentation-v3-2026-11-08`** includes an opening C1 recap, the C1 visual style and ten editable charts. It updates the three-file ZIP while preserving the executed notebook, brief, original **`c2-submission-2026-11-08`** tag and first visual revision.
 
 **Business Intelligence IIB423T-1 · Workshop 2 · Original analysis 20 October; corrective release 8 November 2026**  
 **Authors:** Moisés Medina and Ignacia Castillo  

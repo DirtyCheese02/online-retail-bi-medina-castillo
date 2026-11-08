@@ -1,22 +1,22 @@
 {
-  "slides": 13,
-  "mainSlides": 12,
+  "slides": 14,
+  "mainSlides": 13,
   "nativeCharts": 10,
   "nativeChartOwnerSlides": [
-    4,
-    6,
+    5,
     7,
     8,
     9,
     10,
-    11
+    11,
+    12
   ],
   "nativeTableOwnerSlides": [
-    13
+    14
   ],
   "manifest": [
     {
-      "slide": 4,
+      "slide": 5,
       "type": "bar",
       "sourceKey": "model_partitions",
       "series": [
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "slide": 6,
+      "slide": 7,
       "type": "bar",
       "sourceKey": "Silhouette",
       "series": [
@@ -54,7 +54,7 @@
       ]
     },
     {
-      "slide": 7,
+      "slide": 8,
       "type": "scatter",
       "sourceKey": "scatter_reference",
       "series": [
@@ -6125,7 +6125,7 @@
       "categories": null
     },
     {
-      "slide": 7,
+      "slide": 8,
       "type": "scatter",
       "sourceKey": "scatter_cluster",
       "series": [
@@ -12196,7 +12196,7 @@
       "categories": null
     },
     {
-      "slide": 8,
+      "slide": 9,
       "type": "bar",
       "sourceKey": "ID-month records",
       "series": [
@@ -12216,7 +12216,7 @@
       ]
     },
     {
-      "slide": 8,
+      "slide": 9,
       "type": "bar",
       "sourceKey": "Median invoice count",
       "series": [
@@ -12236,7 +12236,7 @@
       ]
     },
     {
-      "slide": 8,
+      "slide": 9,
       "type": "bar",
       "sourceKey": "Median avg invoice (GBP)",
       "series": [
@@ -12256,7 +12256,7 @@
       ]
     },
     {
-      "slide": 9,
+      "slide": 10,
       "type": "bar",
       "sourceKey": "reference_composition",
       "series": [
@@ -12292,7 +12292,7 @@
       ]
     },
     {
-      "slide": 10,
+      "slide": 11,
       "type": "bar",
       "sourceKey": "stability",
       "series": [
@@ -12317,7 +12317,7 @@
       ]
     },
     {
-      "slide": 11,
+      "slide": 12,
       "type": "bar",
       "sourceKey": "value_bridge",
       "series": [

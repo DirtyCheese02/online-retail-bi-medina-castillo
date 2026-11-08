@@ -49,12 +49,14 @@ ns={'p':'http://schemas.openxmlformats.org/presentationml/2006/main','a':'http:/
 with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2_Presentation.pptx') as z:
     slidefiles=[p for p in z.namelist() if re.fullmatch(r'ppt/slides/slide\d+\.xml',p)]
     notes=[p for p in z.namelist() if re.fullmatch(r'ppt/notesSlides/notesSlide\d+\.xml',p)]
-    check('Presentation has 13 slides and 13 speaking-note parts',len(slidefiles)==13 and len(notes)==13)
+    check('Presentation has 14 slides and 14 speaking-note parts',len(slidefiles)==14 and len(notes)==14)
     slides={int(re.search(r'slide(\d+)',p).group(1)):E.fromstring(z.read(p)) for p in slidefiles}
-    check('Backup slide has an editable exact cross-table',slides[13].find('.//a:tbl',ns) is not None)
+    recap=' '.join(t.text or '' for t in slides[2].findall('.//a:t',ns))
+    check('Opening C1 recap states method, scoped findings and conclusion',all(x in recap for x in ['C1 recap','audited UCI Online Retail','60.5%','85.7%','14.3%','430 of 4,293','Review major accounts and improve ID capture together','C2 explores']))
+    check('Backup slide has an editable exact cross-table',slides[14].find('.//a:tbl',ns) is not None)
     charts=[p for p in z.namelist() if re.search(r'/charts/chart\d+\.xml$',p)]
     check('Ten native charts have ten embedded data workbooks',len(charts)==10 and len([p for p in z.namelist() if p.endswith('.xlsx') and 'embeddings/' in p])==10)
-    for n,count in {4:1,6:1,7:2,8:3,9:1,10:1,11:1}.items():
+    for n,count in {5:1,7:1,8:2,9:3,10:1,11:1,12:1}.items():
         check(f'Slide {n} has the expected editable charts',len(slides[n].findall('.//c:chart',ns))==count)
     profiles=[x for x in R['test_profiles'] if x['method']=='KMeans']
     vc=m.loc[m.partition.eq('validation')].set_index('method')
@@ -90,10 +92,10 @@ with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2_Presentation.pptx') as z:
         else:
             values=[[float(v.text) for v in s.findall('.//c:val//c:numCache/c:pt/c:v',ns)] for s in series]
             check(f'Native chart {i+1} agrees with notebook values',np.allclose(values,expected[i],atol=.00501 if i==6 else 1e-9,rtol=0))
-    table=slides[13].find('.//a:tbl',ns)
+    table=slides[14].find('.//a:tbl',ns)
     actualcounts=[[int(''.join(t.text or '' for t in cell.findall('.//a:t',ns)).replace(',','')) for cell in row.findall('a:tc',ns)[1:]] for row in table.findall('a:tr',ns)[1:]]
     check('Presentation backup preserves all exact reference counts',np.array_equal(actualcounts,counts) and sum(map(sum,actualcounts))==3021)
-    slide9=' '.join(t.text or '' for t in slides[9].findall('.//a:t',ns))
+    slide9=' '.join(t.text or '' for t in slides[10].findall('.//a:t',ns))
     check('Presentation test metrics agree with notebook','0.464' in slide9 and '0.289' in slide9 and '380' in slide9)
 with ZipFile(DELIVERY/'GROUP_Medina_Castillo_C2.zip') as z:
     expectednames={'01_C2_Customer_Profiles.ipynb','GROUP_Medina_Castillo_C2_Brief.pdf','GROUP_Medina_Castillo_C2_Presentation.pptx'}

@@ -86,7 +86,11 @@
       "result": "PASS"
     },
     {
-      "check": "Presentation has 13 slides and 13 speaking-note parts",
+      "check": "Presentation has 14 slides and 14 speaking-note parts",
+      "result": "PASS"
+    },
+    {
+      "check": "Opening C1 recap states method, scoped findings and conclusion",
       "result": "PASS"
     },
     {
@@ -98,11 +102,7 @@
       "result": "PASS"
     },
     {
-      "check": "Slide 4 has the expected editable charts",
-      "result": "PASS"
-    },
-    {
-      "check": "Slide 6 has the expected editable charts",
+      "check": "Slide 5 has the expected editable charts",
       "result": "PASS"
     },
     {
@@ -123,6 +123,10 @@
     },
     {
       "check": "Slide 11 has the expected editable charts",
+      "result": "PASS"
+    },
+    {
+      "check": "Slide 12 has the expected editable charts",
       "result": "PASS"
     },
     {
@@ -214,7 +218,7 @@
       "result": "PASS"
     }
   ],
-  "check_count": 53,
+  "check_count": 54,
   "notebook_code_cells": 9,
   "brief_pages": 3,
   "route": "clustering",

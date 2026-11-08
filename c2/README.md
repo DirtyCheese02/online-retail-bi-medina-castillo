@@ -8,7 +8,7 @@ The updated IIB423T-1 brief supplied by the team sets **8 November 2026 end of d
 
 1. `01_C2_Customer_Profiles.ipynb` — executed, English, all project functions inline, saved tables/figures, contribution/AI notes and defense checkpoints.
 2. `GROUP_Medina_Castillo_C2_Brief.pdf` — three pages including references, generated from notebook results.
-3. `GROUP_Medina_Castillo_C2_Presentation.pptx` — editable presentation, 12 main slides plus a source/defense backup, with speaking notes for approximately 13 minutes including pauses.
+3. `GROUP_Medina_Castillo_C2_Presentation.pptx` — editable presentation, 13 main slides plus a source/defense backup, with speaking notes for approximately 14 minutes including pauses. Slide 2 summarizes the C1 analysis and conclusion before introducing C2.
 
 No data, environment, source sidecars, README or extra report is inside the ZIP. Saved notebook outputs are readable without running code. Rerunning uses the preserved local W2 input when available, otherwise an exact SHA-256-checked public input at an immutable GitHub commit. That download is documented inside the notebook; all analysis functions are inline.
 
@@ -30,7 +30,7 @@ The revised deck follows the team's C1 visual reference: Montserrat titles, larg
 
 `presentation/prepare_visual_data.py` reconstructs the held coordinates and assignments from the saved monthly records and frozen model parameters without retraining. `presentation/build_visual_deck.mjs` authors the revised deck through Artifact Session using `visual_data.json`, the two C1 cover assets and `speaker_notes_source.json`. Monetary chart medians display two decimals; scatter coordinates use six decimals and chart percentage fractions use ten solely for Excel portability. Calculations in the notebook remain unchanged.
 
-The notebook and three-page brief are byte-identical to `c2-submission-2026-11-08`. That original tag remains preserved. The revised presentation and three-file ZIP are identified by `c2-presentation-v2-2026-11-08`.
+The notebook and three-page brief are byte-identical to `c2-submission-2026-11-08`. That original tag and the first visual revision `c2-presentation-v2-2026-11-08` remain preserved. The presentation with the opening C1 recap and its three-file ZIP are identified by `c2-presentation-v3-2026-11-08`.
 
 ## Contributions and AI disclosure
 

@@ -22,11 +22,12 @@ export async function buildVisualDeck(presentation,D,cover,fade,oldNotes=[]) {
     slides.push(s);return s;
   }
   function notes(s,oldIndex,extra=''){
-    const seconds=[25,65,55,55,85,65,80,75,65,60,60,55,0][slides.length-1];
+    const logicalSlide=slides.length>2?slides.length-1:slides.length;
+    const seconds=[25,65,55,55,85,65,80,75,65,60,60,55,0][logicalSlide-1];
     let speech=(oldNotes[oldIndex]??'').replace(/Speaking guide: approximately \d+ seconds including pauses\./,'Speaking guide: approximately '+seconds+' seconds including pauses.');
-    if(slides.length===6)speech=speech.replace('validation table','validation comparison');
-    if(slides.length===7)speech='Speaking guide: approximately 80 seconds including pauses.\n\nEach dot is one of the same 3,021 held customer-months. The charts have identical coordinates and scales. Further right means more invoices and higher up means larger average invoices, after the training-only log/scaling transformation. The left chart colors records by the simple value rule. The right chart colors them by the frozen KMeans model. The vertical bands reflect discrete invoice counts. This makes the difference between grouping by total value and grouping by purchase pattern visible. The axes are unitless standardized values, not raw invoice counts or pounds.';
-    if(slides.length===9)speech='Speaking guide: approximately 65 seconds including pauses.\n\nThese bars show percentages within each reference value tier. They are derived from the exact cross-table in the notebook and backup slide. Of the 380 higher-value customer-months, 124 fall in Profile 2 and 256 in Profile 3. Similar total contribution can come from different purchase patterns. The test silhouette is 0.464 for KMeans and 0.289 for the value rule on identical records and inputs. The improvement describes this feature-space geometry. It does not establish more profitable actions or classification accuracy.';
+    if(logicalSlide===6)speech=speech.replace('validation table','validation comparison');
+    if(logicalSlide===7)speech='Speaking guide: approximately 80 seconds including pauses.\n\nEach dot is one of the same 3,021 held customer-months. The charts have identical coordinates and scales. Further right means more invoices and higher up means larger average invoices, after the training-only log/scaling transformation. The left chart colors records by the simple value rule. The right chart colors them by the frozen KMeans model. The vertical bands reflect discrete invoice counts. This makes the difference between grouping by total value and grouping by purchase pattern visible. The axes are unitless standardized values, not raw invoice counts or pounds.';
+    if(logicalSlide===9)speech='Speaking guide: approximately 65 seconds including pauses.\n\nThese bars show percentages within each reference value tier. They are derived from the exact cross-table in the notebook and backup slide. Of the 380 higher-value customer-months, 124 fall in Profile 2 and 256 in Profile 3. Similar total contribution can come from different purchase patterns. The test silhouette is 0.464 for KMeans and 0.289 for the value rule on identical records and inputs. The improvement describes this feature-space geometry. It does not establish more profitable actions or classification accuracy.';
     s.speakerNotes.text=speech+'\n\n'+extra+'\nSource: submitted 01_C2_Customer_Profiles.ipynb; Chen (2015), UCI Online Retail, doi:10.24432/C5BW33. Method: scikit-learn 1.5.2 KMeans, StandardScaler and silhouette_score documentation. Design reference: team-provided GROUP_Medina_Castillo_C1_Slides.pdf.';
   }
   function fonts(chart){
@@ -63,6 +64,19 @@ export async function buildVisualDeck(presentation,D,cover,fade,oldNotes=[]) {
   text(s,'Monthly purchase profiles in UCI Online Retail',68,435,660,80,27,C.mint);
   text(s,'Moisés Medina  ×  Ignacia Castillo\n10 November 2026',68,600,650,60,19,C.white);
   notes(s,0,'Cover artwork is a decorative image extracted intact from our supplied C1 reference, not a data chart.');
+
+  s=base('C1 recap: customer concentration');
+  text(s,'We audited UCI Online Retail and measured how much eligible purchase value came from the highest-value customers.',70,143,1140,95,27,C.muted);
+  number(s,num(R.annual_W2_reproduction.K10_pct,1)+'%',70,254,510,C.teal,88);
+  text(s,'K10: share from the top 10% of IDs',75,365,525,41,25,C.ink,true);
+  text(s,'Of identified purchase value, 60.5%\ncame from 430 of 4,293 customer IDs.',75,413,525,84,26);
+  number(s,num(R.annual_W2_reproduction.ID_coverage_pct,1)+'%',713,254,500,C.orange,88);
+  text(s,'ID coverage: value linked to an ID',718,365,510,41,25,C.ink,true);
+  text(s,'We could rank 85.7% of eligible value.\nThe remaining 14.3% had no customer ID.',718,413,510,84,26);
+  text(s,'C1 CONCLUSION',75,523,1100,28,15,C.teal,true,'Consolas');
+  text(s,'Review major accounts and improve ID capture together.',75,559,1125,52,30,C.ink,true);
+  text(s,'C2 explores how purchase frequency and invoice size distinguish customer activity.',75,627,1130,45,24,C.teal);
+  s.speakerNotes.text='Speaking guide: approximately 50 seconds including pauses.\n\nIn C1 we checked the quality of the Online Retail data, defined eligible positive purchases and examined how recorded purchase value was distributed across customer IDs. The top 10 percent, 430 of 4,293 identified customers, contributed 60.5 percent of identified value. ID-value coverage was 85.7 percent, which left 14.3 percent outside the ranking. Our conclusion was to review major accounts while investigating ID capture. C2 extends that descriptive question by separating purchase frequency from average invoice size. These are historical positive recorded purchases, not profit or evidence of loyalty.\n\nSource: team-provided GROUP_Medina_Castillo_C1_Slides.pdf, slide 11. The same baseline is reproduced in the submitted C2 notebook. C1 uses customer IDs across the full analysis period. C2 models active customer-months, so their population counts differ.';
 
   s=base('The Online Retail case');
   text(s,'A UK gift retailer with many wholesale customers. December 2010–November 2011.',48,133,1180,65,26,C.muted);
@@ -186,5 +200,5 @@ export async function buildVisualDeck(presentation,D,cover,fade,oldNotes=[]) {
   text(s,'Method: scikit-learn 1.5.2 KMeans, StandardScaler and silhouette_score.',70,525,1140,55,23,C.muted);
   text(s,'Counts refer to customer-months, not distinct customers or true outcome labels.',70,608,1140,58,27,C.teal,true);
   notes(s,11,'Backup only. Full code, provenance, contribution/AI notes and eight defense checkpoints remain inside the unchanged executed notebook. This table preserves exact cross-counts behind the percentage graphic. Official method references: https://scikit-learn.org/1.5/modules/generated/sklearn.cluster.KMeans.html and https://scikit-learn.org/1.5/modules/generated/sklearn.metrics.silhouette_score.html.');
-  return {slides:13,mainSlides:12,nativeCharts:manifest.length,nativeChartOwnerSlides:[4,6,7,8,9,10,11],nativeTableOwnerSlides:[13],manifest};
+  return {slides:14,mainSlides:13,nativeCharts:manifest.length,nativeChartOwnerSlides:[5,7,8,9,10,11,12],nativeTableOwnerSlides:[14],manifest};
 }
