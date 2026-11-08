@@ -1,0 +1,15 @@
+{
+  "recorded_on": "2026-11-08",
+  "source": "Actual W2 feedback relayed by team; original issue date not supplied",
+  "analytical_baseline_sha": "d33a27c97a3bb9e6b31fb9cb23be83156c11d0f3",
+  "unchanged_raw_rules_and_baseline_artifacts": true,
+  "primary_notebook_code_cells_executed": 11,
+  "local_acceptance_checks_passed": 40,
+  "pdf_pages": 14,
+  "pdf_clickable_annotations": 29,
+  "function_specific_code_links": 5,
+  "all_seven_deductions_have_evidence": true,
+  "C2_follow_up": "Proposed protocol and initial value-scope decomposition; temporal/cohort extension not yet executed",
+  "upload_receipt": "Not verified; staging/publication do not upload to Canvas",
+  "grade_change": "Not provided; no claim made"
+}
