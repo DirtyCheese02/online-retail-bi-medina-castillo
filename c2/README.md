@@ -34,7 +34,7 @@ The original C2 submission and both visual revisions remain preserved at their t
 
 The role update `c2-roles-2026-11-08` records the agreed division of responsibilities for final review and defense. Moisés covers data preparation, features, model and evaluation; Ignacia covers profiles, reference comparison and business conclusions; both cover the question, methodology, final review and presentation. Allocation does not certify that every review task is complete. Rubric F–H assess each student's own explanation; file checks do not certify those 40 individual points.
 
-`presentation/C2_Presentation_Dialogue_EN.md` is the English rehearsal dialogue for the current 13 main slides, with a backup-table explanation and short defense answers. Approximately 1,250 spoken words target 12–13 minutes with chart pauses; actual duration requires rehearsal. It is a preparation aid outside the three-file Canvas ZIP.
+`presentation/C2_Presentation_Dialogue_EN.md` is the English rehearsal script for the current 13 main slides, with no assigned speakers. It includes a backup-table explanation and plain-language defense answers on KMeans, the reference rule, silhouette, temporal splitting and possible future marketing studies. The target is 12–13 minutes with chart pauses; actual duration requires rehearsal. It is a preparation aid outside the three-file Canvas ZIP.
 
 ## Contributions and AI disclosure
 
